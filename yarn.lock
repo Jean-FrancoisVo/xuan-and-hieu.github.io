@@ -1165,6 +1165,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@svgdotjs/svg.draw.js@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@svgdotjs/svg.draw.js@npm:3.0.2"
+  peerDependencies:
+    "@svgdotjs/svg.js": ^3.2.4
+  checksum: 10c0/0cc0ea5fe07698148fc6202447d3da0bdf5a847001afacf0268711ee914d58c0a340a954d7bcedaf4a48a4ed77314a050c7b08fd2061d633c3f77bd51b9f4737
+  languageName: node
+  linkType: hard
+
+"@svgdotjs/svg.js@npm:^3.2.4":
+  version: 3.2.4
+  resolution: "@svgdotjs/svg.js@npm:3.2.4"
+  checksum: 10c0/35563560998def7fd9b35c434214428f122d1fc11a5d6975fbc9b3c92b3e86700daba74f9106d7abd5dc979eb26c6e6429be71236dd226bc0f2d92e880e8fe2c
+  languageName: node
+  linkType: hard
+
 "@tsconfig/node22@npm:^22.0.0":
   version: 22.0.0
   resolution: "@tsconfig/node22@npm:22.0.0"
@@ -2939,6 +2955,13 @@ __metadata:
   version: 1.4.0
   resolution: "graphemer@npm:1.4.0"
   checksum: 10c0/e951259d8cd2e0d196c72ec711add7115d42eb9a8146c8eeda5b8d3ac91e5dd816b9cd68920726d9fd4490368e7ed86e9c423f40db87e2d8dfafa00fa17c3a31
+  languageName: node
+  linkType: hard
+
+"gsap@npm:^3.12.5":
+  version: 3.12.5
+  resolution: "gsap@npm:3.12.5"
+  checksum: 10c0/cb38e89bd577fc18c9cf77e4aeb83617603b1e0fa768fe8ca1acd836fd852936722e186a88c9cf6ece42e53407edd45324be2bfe35a41f424c5f2c2b33fd1a98
   languageName: node
   linkType: hard
 
@@ -5099,6 +5122,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "xuan-and-hieu.github.io@workspace:."
   dependencies:
+    "@svgdotjs/svg.draw.js": "npm:^3.0.2"
+    "@svgdotjs/svg.js": "npm:^3.2.4"
     "@tsconfig/node22": "npm:^22.0.0"
     "@types/jsdom": "npm:^21.1.7"
     "@types/node": "npm:^22.10.2"
@@ -5111,6 +5136,7 @@ __metadata:
     "@vue/tsconfig": "npm:^0.7.0"
     eslint: "npm:^9.14.0"
     eslint-plugin-vue: "npm:^9.30.0"
+    gsap: "npm:^3.12.5"
     jsdom: "npm:^25.0.1"
     npm-run-all2: "npm:^7.0.2"
     prettier: "npm:^3.3.3"

@@ -1,31 +1,71 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
   <main>
-    <div class="wrapper">
-      <h1>We are preparing our wedding.</h1>
-      <p>Please come back later.</p>
+    <div class="background"></div>
+    <div class="noise"></div>
+    <div class="header">
+      Xuan & Hieu
+    </div>
+    <div class="wrapper-portrait">
+      <img src="@/assets/portrait.jpg" alt="portrait" class="portrait">
+    </div>
+    <div class="content">
+      Aout 2023
     </div>
   </main>
 </template>
 
 <style scoped>
 main {
-  background-image: url("Xuxu & Hieu.jpg");
-  background-position: center;
-  background-position-y: bottom;
-  background-size: cover;
-  background-repeat: no-repeat;
   min-height: 100vh;
 }
 
-.wrapper {
-  position: absolute;
+.header {
+  padding: 5vh 10vw;
+  text-align: center;
   color: #043927;
-  bottom: 15%;
-  padding-left: 55px;
+  font-family: "Alex Brush", serif;
+  font-weight: 500;
+  font-style: normal;
+}
 
+.content  {
+  padding: 5vh 10vw;
+  text-align: center;
+  color: #043927;
+}
+
+.noise {
+  z-index: -1;
+  position: absolute;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-image: url("@/assets/noise.svg");
+  background-repeat: repeat;
+  opacity: 0.3;
+  filter: brightness(130%);
+}
+
+.background {
+  z-index: -2;
+  position: absolute;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: rgba(247,231,206,1);
+}
+
+.portrait {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 100%;
+  width: 75vw;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 1;
 }
 
 </style>
