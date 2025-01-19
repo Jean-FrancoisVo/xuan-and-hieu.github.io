@@ -22,27 +22,27 @@
       ça y est, on se marie !
     </div>
     <button class="confirm">Confirmez votre présence</button>
-
-    <!--    <div class="wrapper-portrait">-->
-    <!--      <img src="@/assets/portrait.jpg" alt="portrait" class="portrait">-->
-    <!--    </div>-->
+    <div class="popup">
+<!--      <img src="@/assets/Xuxu%20&%20Hieu.jpg" alt="portrait">-->
+    </div>
   </main>
+  <div>toto</div>
 </template>
 
 <style scoped>
 main {
   min-height: 100vh;
-  background: rgba(247, 231, 206, 1);
+  background: var(--color-champagne);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
 }
 
 header {
-  background: rgba(247, 231, 206, 1);
+  background: var(--color-champagne);
   padding: 1vh 5vw;
-  color: #043927;
+  color: var(--color-sacramento);
   font-family: "Alex Brush", serif;
   font-weight: 400;
   font-style: normal;
@@ -67,7 +67,7 @@ header {
 }
 
 .content {
-  color: #043927;
+  color: var(--color-sacramento);
   font-family: Anton, serif;
   font-size: 1em;
   font-style: normal;
@@ -75,6 +75,20 @@ header {
   line-height: normal;
   text-transform: uppercase;
   padding: 4vh 0;
+}
+
+.confirm {
+  border-radius: 12px;
+  border: 1px solid var(--color-sacramento);
+  color: var(--color-sacramento);
+  text-align: center;
+  font-family: "Alex Brush", serif;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 1vh 4vw;
+  background-color: var(--color-champagne);
 }
 
 .noise {
@@ -88,17 +102,12 @@ header {
   filter: brightness(130%);
 }
 
-.portrait {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  /*  border-radius: 50% 50% 0 0;*/
-  border-top-left-radius: 56% 37%;
-  border-top-right-radius: 56% 37%;
-  width: 85vw;
-  object-fit: cover;
-  object-position: 50% 50%;
-  opacity: 1;
+.popup {
+  min-width: 100vw;
+  min-height: 35vh;
+  background-image: url("@/assets/Xuxu & Hieu.jpg");
+  background-size: 150%;
+  background-position: top;
 }
 
 </style>

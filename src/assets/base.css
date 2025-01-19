@@ -1,7 +1,8 @@
 
 /* semantic color variables for this project */
 :root {
-  /*--color-background: var(--vt-c-white);*/
+  --color-champagne: rgb(247,231,206);
+  --color-sacramento: rgb(4,57,39);
   /*--color-background-soft: var(--vt-c-white-soft);*/
   /*--color-background-mute: var(--vt-c-white-mute);*/
 
