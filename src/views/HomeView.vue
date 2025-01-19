@@ -9,11 +9,16 @@
     <div class="header">
       Xuan & Hieu
     </div>
+    <div class="circle-around"></div>
     <div class="wrapper-portrait">
       <img src="@/assets/portrait.jpg" alt="portrait" class="portrait">
     </div>
+    <div>
+      <img src="@/assets/2%20sparkle.png" alt="sparkle" class="sparkle">
+    </div>
     <div class="content">
-      Aout 2023
+      Aout 2025 <br/>
+      Palais Bénédictine - Fécamp
     </div>
   </main>
 </template>
@@ -54,18 +59,27 @@ main {
   position: absolute;
   min-height: 100vh;
   min-width: 100vw;
-  background-color: rgba(247,231,206,1);
+  background: linear-gradient(to bottom, rgba(247,231,206,1), rgba(255,255,255,1)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/*  background: radial-gradient(circle, rgba(247,231,206,1) 50%, rgba(255,255,255,1) 100%);*/
 }
 
 .portrait {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 100%;
-  width: 75vw;
+/*  border-radius: 50% 50% 0 0;*/
+  border-top-left-radius: 56% 37%;
+  border-top-right-radius: 56% 37%;
+  width: 85vw;
   object-fit: cover;
   object-position: 50% 50%;
   opacity: 1;
+}
+
+.sparkle {
+  position: absolute;
+  width: 100vw;
+  top: 13vh;
 }
 
 </style>
