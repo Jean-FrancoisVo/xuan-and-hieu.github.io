@@ -3,12 +3,21 @@
 </script>
 
 <template>
+  <header>
+    <div class="title">
+      Xuan & Hieu
+    </div>
+    <div class="menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+        <line x1="11.5" y1="16.5" x2="40.5" y2="16.5" stroke="#043927" stroke-width="3" stroke-linecap="round"/>
+        <line x1="11.5" y1="26.5" x2="40.5" y2="26.5" stroke="#043927" stroke-width="3" stroke-linecap="round"/>
+        <line x1="11.5" y1="36.5" x2="40.5" y2="36.5" stroke="#043927" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
   <main>
     <div class="background"></div>
     <div class="noise"></div>
-    <div class="header">
-      Xuan & Hieu
-    </div>
     <div class="circle-around"></div>
     <div class="wrapper-portrait">
       <img src="@/assets/portrait.jpg" alt="portrait" class="portrait">
@@ -28,13 +37,26 @@ main {
   min-height: 100vh;
 }
 
-.header {
-  padding: 5vh 10vw;
-  text-align: center;
+header {
+  background: rgba(247,231,206,1);
+  padding: 1vh 5vw;
   color: #043927;
   font-family: "Alex Brush", serif;
-  font-weight: 500;
+  font-weight: 400;
   font-style: normal;
+  font-size: 0.70em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.title {
+  flex-grow: 3;
+}
+
+.menu {
+  align-self: flex-end;
 }
 
 .content  {
