@@ -29,31 +29,43 @@ const minutes = untilWedding.getMinutes()
     </div>
   </header>
   <main>
-    <div class="noise"></div>
-    <img class="logo" src="@/assets/logo-v.png" alt="logo">
-    <div class="content">
-      ça y est, on se marie !
-    </div>
-    <button class="confirm">Confirmez votre présence</button>
-    <div class="popup">
-      <div class="countdown">
-        <div class="countdown-part">
-          <span class="time">{{ months }}</span>
-          <span class="unit">mois</span>
-        </div>
-        <div class="countdown-part">
-          <span class="time">{{ days }}</span>
-          <span class="unit">jours</span>
-        </div>
-        <div class="countdown-part">
-          <span class="time">{{ hours }}</span>
-          <span class="unit">heures</span>
-        </div>
-        <div class="countdown-part">
-          <span class="time">{{ minutes }}</span>
-          <span class="unit">minutes</span>
+    <div class="first-page">
+      <img class="logo" src="@/assets/logo-v.png" alt="logo">
+      <div class="content">
+        ça y est, on se marie !
+      </div>
+      <button class="confirm">Confirmez votre présence</button>
+      <div class="popup">
+        <div class="countdown">
+          <div class="countdown-part">
+            <span class="time">{{ months }}</span>
+            <span class="unit">mois</span>
+          </div>
+          <div class="countdown-part">
+            <span class="time">{{ days }}</span>
+            <span class="unit">jours</span>
+          </div>
+          <div class="countdown-part">
+            <span class="time">{{ hours }}</span>
+            <span class="unit">heures</span>
+          </div>
+          <div class="countdown-part">
+            <span class="time">{{ minutes }}</span>
+            <span class="unit">minutes</span>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="second-page">
+      <h3>le mariage</h3>
+      <p>
+        Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br/>
+        110 rue Alexandre le Grand <br/>
+        76400 Fécamp
+      </p>
+    </div>
+    <div class="third-page">
+
     </div>
   </main>
 <!--  <div>toto</div>-->
@@ -76,8 +88,11 @@ header {
 }
 
 main {
-  height: 87vh;
   background: var(--color-champagne);
+}
+
+.first-page {
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,7 +115,7 @@ main {
 .content {
   color: var(--color-sacramento);
   font-family: Anton, serif;
-  font-size: 0.95em;
+  font-size: 0.85em;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -111,29 +126,31 @@ main {
   text-align: center;
 }
 
+h3 {
+  color: var(--color-sacramento);
+  font-family: Anton, serif;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  padding: 5vh 0 0 0;
+  word-break: break-word;
+  text-align: center;
+}
+
 .confirm {
   border-radius: 12px;
   border: 1px solid var(--color-sacramento);
   color: var(--color-sacramento);
   text-align: center;
   font-family: "Alex Brush", serif;
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   padding: 1vh 4vw;
   background-color: var(--color-champagne);
-}
-
-.noise {
-  z-index: -1;
-  position: absolute;
-  min-height: 100vh;
-  min-width: 100vw;
-  background-image: url("@/assets/noise.svg");
-  background-repeat: repeat;
-  opacity: 0.3;
-  filter: brightness(130%);
 }
 
 .popup {
@@ -169,6 +186,31 @@ main {
 .unit {
   font-size: 0.5em;
   font-weight: 100;
+}
+
+.second-page p {
+  color: #000;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.60em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 5vh 5vw;
+  white-space: pre-wrap;
+}
+
+.second-page span {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.third-page {
+  background-image: url("@/assets/IMG_0004.JPG");
+  min-width: 100vw;
+  min-height: 100vh;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 </style>
