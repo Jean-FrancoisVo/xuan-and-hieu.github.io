@@ -21,7 +21,7 @@ const minutes = untilWedding.getMinutes()
       Xuan & Hieu
     </div>
     <div class="menu">
-      <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="" viewBox="0 0 50 47" fill="none">
         <line x1="11.5" y1="16.5" x2="40.5" y2="16.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
         <line x1="11.5" y1="26.5" x2="40.5" y2="26.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
         <line x1="11.5" y1="36.5" x2="40.5" y2="36.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
@@ -72,11 +72,11 @@ header {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  height: 11vh;
+  height: 10vh;
 }
 
 main {
-  height: 89vh;
+  height: 87vh;
   background: var(--color-champagne);
   display: flex;
   flex-direction: column;
