@@ -1,4 +1,17 @@
 <script setup lang="ts">
+const MS_PER_DAY = 1000 * 60 * 60 * 24
+const MS_PER_HOUR = 1000 * 60 * 60;
+const monthsBetween = (from: Date, to: Date) => Math.abs((to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth()))
+const daysBetween = (from: Date, to: Date) => Math.abs((to.getTime() - from.getTime()) / MS_PER_DAY)
+const hoursBetween = (from: Date, to: Date) => Math.abs((to.getTime() - from.getTime()) / MS_PER_HOUR)
+const weddingDay = new Date('2025-08-23T18:00:00.000Z').getTime()
+const now = new Date().getTime()
+const untilWedding = new Date(weddingDay - now)
+
+const months = untilWedding.getMonth()
+const days = untilWedding.getDay()
+const hours = untilWedding.getHours()
+const minutes = untilWedding.getMinutes()
 
 </script>
 
@@ -23,7 +36,24 @@
     </div>
     <button class="confirm">Confirmez votre présence</button>
     <div class="popup">
-<!--      <img src="@/assets/Xuxu%20&%20Hieu.jpg" alt="portrait">-->
+      <div class="countdown">
+        <div class="countdown-part">
+          <span class="time">{{ months }}</span>
+          <span class="unit">mois</span>
+        </div>
+        <div class="countdown-part">
+          <span class="time">{{ days }}</span>
+          <span class="unit">jours</span>
+        </div>
+        <div class="countdown-part">
+          <span class="time">{{ hours }}</span>
+          <span class="unit">heures</span>
+        </div>
+        <div class="countdown-part">
+          <span class="time">{{ minutes }}</span>
+          <span class="unit">minutes</span>
+        </div>
+      </div>
     </div>
   </main>
   <div>toto</div>
@@ -108,6 +138,33 @@ header {
   background-image: url("@/assets/Xuxu & Hieu.jpg");
   background-size: 150%;
   background-position: top;
+}
+
+.countdown {
+  background-color: rgba(0, 0, 0, 0.45);
+  line-height: normal;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0.2em 0;
+}
+
+.countdown-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.time {
+  font-family: "Anton", sans-serif;
+  font-style: normal;
+  font-size: 0.85em;
+}
+
+.unit {
+  font-size: 0.5em;
+  font-weight: 100;
 }
 
 </style>
