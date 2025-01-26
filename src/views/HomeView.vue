@@ -56,19 +56,10 @@ const minutes = untilWedding.getMinutes()
       </div>
     </div>
   </main>
-  <div>toto</div>
+<!--  <div>toto</div>-->
 </template>
 
 <style scoped>
-main {
-  min-height: 100vh;
-  background: var(--color-champagne);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
 header {
   background: var(--color-champagne);
   padding: 1vh 5vw;
@@ -81,6 +72,16 @@ header {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
+  height: 11vh;
+}
+
+main {
+  height: 89vh;
+  background: var(--color-champagne);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
@@ -88,8 +89,8 @@ header {
 }
 
 .logo {
-  width: 55vw;
-  height: 55vw;
+  width: 45vw;
+  height: 45vw;
 }
 
 .menu {
@@ -99,12 +100,15 @@ header {
 .content {
   color: var(--color-sacramento);
   font-family: Anton, serif;
-  font-size: 1em;
+  font-size: 0.95em;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   text-transform: uppercase;
-  padding: 4vh 0;
+  padding: 0 5vw;
+  word-break: break-word;
+  align-self: center;
+  text-align: center;
 }
 
 .confirm {
