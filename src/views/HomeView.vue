@@ -297,7 +297,13 @@ h4 {
 }
 
 .fifth-page {
-  height: 95vh;
+  margin-top: 7vh;
+  background-image: url("@/assets/IMG_9992.JPG");
+  min-width: 100vw;
+  min-height: 100vh;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  padding-top: 20vh;
 }
 
 </style>
