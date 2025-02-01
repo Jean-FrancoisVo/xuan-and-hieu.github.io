@@ -350,6 +350,7 @@ h4 {
 }
 
 .sixth-page {
+  margin-top: 5vh;
   margin-bottom: 5vh;
 }
 
@@ -361,6 +362,10 @@ h4 {
   background-repeat: no-repeat;
   text-shadow: 0 0 20px black;
   padding-top: 12vh;
+}
+
+.eighth-page {
+  margin-top: 2vh;
 }
 
 .ninth-page {
