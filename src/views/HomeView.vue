@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const weddingDay = new Date('2025-08-23T18:00:00.000Z').getTime()
+const weddingDay = new Date('2025-08-23T17:00:00.000Z').getTime()
 const now = new Date().getTime()
 const untilWedding = new Date(weddingDay - now)
 
@@ -54,8 +54,8 @@ const minutes = untilWedding.getMinutes()
     <div class="second-page">
       <h3 class="sacramento">le mariage</h3>
       <p>
-        Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br/>
-        110 rue Alexandre le Grand <br/>
+        Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br />
+        110 rue Alexandre le Grand <br />
         76400 Fécamp
       </p>
     </div>
@@ -63,8 +63,28 @@ const minutes = untilWedding.getMinutes()
       <h3 class="champagne">le jour j</h3>
       <p>Samedi 23 août</p>
     </div>
+    <div class="fourth-page">
+      <div class="moment">
+        <h4>Cérémonie</h4>
+        <div class="time-range">17h30 ~ 18h30</div>
+        <div class="location">Au jardin du palais</div>
+        <img class="decoration" src="@/assets/wedding-decoration_18408585%201.png" alt="wedding"/>
+      </div>
+      <div class="moment">
+        <h4>Cocktail</h4>
+        <div class="time-range">18h30 ~ 19h30</div>
+        <div class="location">Toujours au jardin du palais</div>
+        <img class="decoration" src="@/assets/wine_14590973%201.png" alt="wine"/>
+      </div>
+      <div class="moment">
+        <h4>Réception</h4>
+        <div class="time-range">19h30 ~ 23h59</div>
+        <div class="location">La salle des abbés pour les adultes</div>
+        <div class="location">Les salons attenants pour les kids</div>
+        <img class="decoration" src="@/assets/spoon_15675636%201.png" alt="dinner"/>
+      </div>
+    </div>
   </main>
-<!--  <div>toto</div>-->
 </template>
 
 <style scoped>
@@ -226,6 +246,51 @@ h3 {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.fourth-page {
+  background-color: var(--color-champagne);
+  text-align: center;
+}
+
+.moment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h4 {
+  color: var(--color-sacramento);
+  font-family: "Alex Brush", serif;
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.time-range {
+  color: black;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.65em;
+  font-style: italic;
+  font-weight: 700;
+  line-height: normal;
+  padding: 1vh 0;
+}
+
+.location {
+  color: black;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.65em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.decoration {
+  width: 13vw;
+  padding: 4vh 0 3vh;
 }
 
 </style>
