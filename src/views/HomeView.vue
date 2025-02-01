@@ -79,13 +79,33 @@ const minutes = untilWedding.getMinutes()
       <div class="moment">
         <h4>Réception</h4>
         <div class="time-range">19h30 ~ 23h59</div>
-        <div class="location">La salle des abbés pour les adultes</div>
+        <div class="location">La salle des Abbés pour les adultes</div>
         <div class="location">Les salons attenants pour les kids</div>
         <img class="decoration" src="@/assets/spoon_15675636%201.png" alt="dinner"/>
       </div>
     </div>
     <div class="fifth-page">
-
+      <h3 class="champagne">la nuit</h3>
+    </div>
+    <div class="sixth-page">
+      <div class="moment">
+        <h4>Soirée</h4>
+        <div class="time-range">00h00 ~ 03h45</div>
+        <div class="location">La salle des Abbés</div>
+        <img class="decoration" src="@/assets/music_15675687%201.png" alt="music"/>
+      </div>
+    </div>
+    <div class="seventh-page">
+      <h3 class="champagne">le lendemain</h3>
+      <p>Dimanche 24 Août</p>
+    </div>
+    <div class="eighth-page">
+      <div class="moment">
+        <h4>Brunch</h4>
+        <div class="time-range">11h00 ~ 15h00</div>
+        <div class="location">La verrière du palais</div>
+        <img class="decoration" src="@/assets/coffee_15675463%201.png" alt="coffee"/>
+      </div>
     </div>
   </main>
 </template>
@@ -111,7 +131,7 @@ main {
 }
 
 .first-page {
-  height: 90vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -155,6 +175,10 @@ h3 {
   padding: 5vh 0 0 0;
   word-break: break-word;
   text-align: center;
+}
+
+.second-page {
+  margin: 5vh 0;
 }
 
 .sacramento {
@@ -234,14 +258,14 @@ h3 {
 .third-page {
   background-image: url("@/assets/IMG_0004.JPG");
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: 71vh;
   background-size: 100%;
   background-repeat: no-repeat;
-  padding-top: 20vh;
+  padding-top: 11vh;
   text-shadow: 0 0 15px black;
 }
 
-.third-page p {
+p {
   color: var(--color-champagne);
   text-align: center;
   font-family: "Cormorant Garamond", serif;
@@ -254,6 +278,7 @@ h3 {
 .fourth-page {
   background-color: var(--color-champagne);
   text-align: center;
+  padding: 3vh 0;
 }
 
 .moment {
@@ -275,7 +300,7 @@ h4 {
 .time-range {
   color: black;
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.65em;
+  font-size: 0.6em;
   font-style: italic;
   font-weight: 700;
   line-height: normal;
@@ -285,7 +310,7 @@ h4 {
 .location {
   color: black;
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.65em;
+  font-size: 0.6em;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -297,13 +322,27 @@ h4 {
 }
 
 .fifth-page {
-  margin-top: 7vh;
   background-image: url("@/assets/IMG_9992.JPG");
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: 75vh;
   background-size: 100%;
   background-repeat: no-repeat;
   padding-top: 20vh;
+  text-shadow: 0 0 15px black;
+}
+
+.sixth-page {
+  margin-bottom: 5vh;
+}
+
+.seventh-page {
+  background-image: url("@/assets/IMG_0024.JPG");
+  min-width: 100vw;
+  min-height: 75vh;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  text-shadow: 0 0 20px black;
+  padding-top: 12vh;
 }
 
 </style>
