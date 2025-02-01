@@ -1,9 +1,4 @@
 <script setup lang="ts">
-const MS_PER_DAY = 1000 * 60 * 60 * 24
-const MS_PER_HOUR = 1000 * 60 * 60;
-const monthsBetween = (from: Date, to: Date) => Math.abs((to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth()))
-const daysBetween = (from: Date, to: Date) => Math.abs((to.getTime() - from.getTime()) / MS_PER_DAY)
-const hoursBetween = (from: Date, to: Date) => Math.abs((to.getTime() - from.getTime()) / MS_PER_HOUR)
 const weddingDay = new Date('2025-08-23T18:00:00.000Z').getTime()
 const now = new Date().getTime()
 const untilWedding = new Date(weddingDay - now)
@@ -57,7 +52,7 @@ const minutes = untilWedding.getMinutes()
       </div>
     </div>
     <div class="second-page">
-      <h3>le mariage</h3>
+      <h3 class="sacramento">le mariage</h3>
       <p>
         Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br/>
         110 rue Alexandre le Grand <br/>
@@ -65,7 +60,8 @@ const minutes = untilWedding.getMinutes()
       </p>
     </div>
     <div class="third-page">
-
+      <h3 class="champagne">le jour j</h3>
+      <p>Samedi 23 août</p>
     </div>
   </main>
 <!--  <div>toto</div>-->
@@ -127,9 +123,8 @@ main {
 }
 
 h3 {
-  color: var(--color-sacramento);
   font-family: Anton, serif;
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -137,6 +132,14 @@ h3 {
   padding: 5vh 0 0 0;
   word-break: break-word;
   text-align: center;
+}
+
+.sacramento {
+  color: var(--color-sacramento);
+}
+
+.champagne {
+  color: var(--color-champagne);
 }
 
 .confirm {
@@ -211,6 +214,18 @@ h3 {
   min-height: 100vh;
   background-size: 100%;
   background-repeat: no-repeat;
+  padding-top: 20vh;
+  text-shadow: 0 0 15px black;
+}
+
+.third-page p {
+  color: var(--color-champagne);
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.60em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 </style>
