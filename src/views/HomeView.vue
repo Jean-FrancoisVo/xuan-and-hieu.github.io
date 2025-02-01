@@ -84,6 +84,9 @@ const minutes = untilWedding.getMinutes()
         <img class="decoration" src="@/assets/spoon_15675636%201.png" alt="dinner"/>
       </div>
     </div>
+    <div class="fifth-page">
+
+    </div>
   </main>
 </template>
 
@@ -291,6 +294,10 @@ h4 {
 .decoration {
   width: 13vw;
   padding: 4vh 0 3vh;
+}
+
+.fifth-page {
+  height: 95vh;
 }
 
 </style>
