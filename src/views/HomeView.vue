@@ -13,14 +13,13 @@ const minutes = untilWedding.getMinutes()
 const isScrolled = ref(false);
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 10; // Detect scrolling down
+  isScrolled.value = window.scrollY > 10;
 };
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
-// Remove event listener when component is unmounted
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
@@ -83,13 +82,13 @@ onUnmounted(() => {
     <div class="fourth-page">
       <div class="moment">
         <h4>Cérémonie</h4>
-        <div class="time-range">17h30 ~ 18h30</div>
+        <div class="time-range">16h30 ~ 18h00</div>
         <div class="location">Au jardin du palais</div>
         <img class="decoration" src="@/assets/wedding-decoration_18408585%201.png" alt="wedding" />
       </div>
       <div class="moment">
         <h4>Cocktail</h4>
-        <div class="time-range">18h30 ~ 19h30</div>
+        <div class="time-range">18h00 ~ 19h30</div>
         <div class="location">Toujours au jardin du palais</div>
         <img class="decoration" src="@/assets/wine_14590973%201.png" alt="wine" />
       </div>
