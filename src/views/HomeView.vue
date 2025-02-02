@@ -96,20 +96,20 @@ onUnmounted(() => {
         <h4>Cérémonie</h4>
         <div class="time-range">16h30 ~ 18h00</div>
         <div class="location">Au jardin du palais</div>
-        <img class="decoration" src="@/assets/wedding-decoration_18408585%201.png" alt="wedding" />
+        <img class="decoration" src="@/assets/party_14590894.png" alt="wedding" />
       </div>
       <div class="moment">
         <h4>Cocktail</h4>
         <div class="time-range">18h00 ~ 19h30</div>
         <div class="location">Toujours au jardin du palais</div>
-        <img class="decoration" src="@/assets/wine_14590973%201.png" alt="wine" />
+        <img class="decoration" src="@/assets/wine_14590973.png" alt="wine" />
       </div>
       <div class="moment">
         <h4>Réception</h4>
         <div class="time-range">19h30 ~ 23h59</div>
         <div class="location">La salle des Abbés pour les adultes</div>
         <div class="location">Les salons attenants pour les kids</div>
-        <img class="decoration" src="@/assets/spoon_15675636%201.png" alt="dinner" />
+        <img class="decoration" src="@/assets/spoon_15675636.png" alt="dinner" />
       </div>
     </div>
     <div class="fifth-page">
