@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
+
 const weddingDay = new Date('2025-08-23T17:00:00.000Z').getTime()
 const now = new Date().getTime()
 const untilWedding = new Date(weddingDay - now)
@@ -8,15 +10,30 @@ const days = untilWedding.getDay()
 const hours = untilWedding.getHours()
 const minutes = untilWedding.getMinutes()
 
+const isScrolled = ref(false);
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 10; // Detect scrolling down
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll, { passive: true });
+});
+
+// Remove event listener when component is unmounted
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
 </script>
 
 <template>
-  <header>
+  <header  :class="{ scrolled: isScrolled }">
     <div class="title">
       Xuan & Hieu
     </div>
     <div class="menu">
-      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="" viewBox="0 0 50 47" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="" viewBox="0 8 50 47" fill="none">
         <line x1="11.5" y1="16.5" x2="40.5" y2="16.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
         <line x1="11.5" y1="26.5" x2="40.5" y2="26.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
         <line x1="11.5" y1="36.5" x2="40.5" y2="36.5" stroke="#043927" stroke-width="3" stroke-linecap="round" />
@@ -130,6 +147,8 @@ const minutes = untilWedding.getMinutes()
 
 <style scoped>
 header {
+  position: fixed;
+  top: 0;
   background: var(--color-champagne);
   padding: 1vh 5vw;
   color: var(--color-sacramento);
@@ -142,6 +161,23 @@ header {
   flex-wrap: nowrap;
   align-items: center;
   height: 10vh;
+  width: 100vw;
+}
+
+header::before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  left: 25%;
+  border-top: 1px solid var(--color-sacramento);
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease-in-out;
+}
+
+header.scrolled::before {
+  opacity: 1;
 }
 
 main {
@@ -149,6 +185,7 @@ main {
 }
 
 .first-page {
+  margin-top: 10vh;
   height: 85vh;
   display: flex;
   flex-direction: column;
