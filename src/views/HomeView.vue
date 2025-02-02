@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const weddingDay = new Date('2025-08-23T17:00:00.000Z').getTime()
 const now = new Date().getTime()
@@ -10,24 +10,24 @@ const days = untilWedding.getDay()
 const hours = untilWedding.getHours()
 const minutes = untilWedding.getMinutes()
 
-const isScrolled = ref(false);
+const isScrolled = ref(false)
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 10;
-};
+  isScrolled.value = window.scrollY > 10
+}
 
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll, { passive: true });
-});
+  window.addEventListener('scroll', handleScroll, { passive: true })
+})
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
+  window.removeEventListener('scroll', handleScroll)
+})
 
 </script>
 
 <template>
-  <header  :class="{ scrolled: isScrolled }">
+  <header :class="{ scrolled: isScrolled }">
     <div class="title">
       Xuan & Hieu
     </div>
