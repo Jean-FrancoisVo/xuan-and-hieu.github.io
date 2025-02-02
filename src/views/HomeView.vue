@@ -45,10 +45,11 @@ onUnmounted(() => {
   <main>
     <div class="overlay" :class="{ show: isMenuOpen }">
       <nav class="overlay-content">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
+        <div>Le mariage</div>
+        <div>Notre histoire</div>
+        <div>Votre voyage & hébergement</div>
+        <div>FAQ</div>
+        <button class="confirm">Confirmez votre présence</button>
       </nav>
     </div>
     <div class="first-page">
@@ -248,7 +249,7 @@ header.scrolled::before {
   height: 0;
   width: 100%;
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   top: 0;
   left: 0;
   background-color: var(--color-champagne);
@@ -259,6 +260,30 @@ header.scrolled::before {
 
 .overlay.show {
   height: 100%;
+}
+
+.overlay-content {
+  height: 80%;
+  color: var(--color-sacramento);
+  font-family: Anton, sans-serif;
+  font-size: 0.7em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-content div {
+  padding: 0.9vh 0;
+}
+
+.overlay-content .confirm {
+  margin-top: 2vh;
+  width: 75%;
+  font-size: 1em;
 }
 
 main {
