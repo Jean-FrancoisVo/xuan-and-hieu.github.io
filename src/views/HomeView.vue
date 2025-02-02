@@ -11,13 +11,13 @@ const hours = untilWedding.getHours()
 const minutes = untilWedding.getMinutes()
 
 const isScrolled = ref(false)
-const openMenu = ref(false)
+const isMenuOpen = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10
 }
 const handleMenu = () => {
-  openMenu.value = !openMenu.value
+  isMenuOpen.value = !isMenuOpen.value
 }
 
 onMounted(() => {
@@ -35,7 +35,7 @@ onUnmounted(() => {
     <div class="title">
       Xuan & Hieu
     </div>
-    <div class="menu" @click="handleMenu" :class="{open: openMenu}">
+    <div class="menu" @click="handleMenu" :class="{open: isMenuOpen}">
       <span></span>
       <span></span>
       <span></span>
@@ -43,6 +43,14 @@ onUnmounted(() => {
     </div>
   </header>
   <main>
+    <div class="overlay" :class="{ show: isMenuOpen }">
+      <nav class="overlay-content">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
     <div class="first-page">
       <img class="logo" src="@/assets/logo-v.png" alt="logo">
       <div class="content">
@@ -194,7 +202,7 @@ header.scrolled::before {
 .menu span {
   display: block;
   position: absolute;
-  height: 0.35vh;
+  height: 0.4vh;
   width: 100%;
   background: var(--color-sacramento);
   border-radius: 9px;
@@ -234,6 +242,23 @@ header.scrolled::before {
   top: 1.5vh;
   width: 0;
   left: 50%;
+}
+
+.overlay {
+  height: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--color-champagne);
+  overflow-x: hidden;
+  transition: all 0.7s cubic-bezier(.25, .75, .5, 1.25);
+  margin-top: 10vh;
+}
+
+.overlay.show {
+  height: 100%;
 }
 
 main {
