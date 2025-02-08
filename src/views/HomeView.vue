@@ -53,11 +53,13 @@ onUnmounted(() => {
       </nav>
     </div>
     <div class="first-page">
-      <img class="logo" src="@/assets/logo-v.png" alt="logo">
-      <div class="content">
-        ça y est, on se marie !
+      <div class="container">
+        <img class="logo" src="@/assets/LOGO.png" alt="logo">
+        <div class="content">
+          ça y est, on se marie !
+        </div>
+        <button class="confirm">Confirmez votre présence</button>
       </div>
-      <button class="confirm">Confirmez votre présence</button>
       <div class="popup">
         <div class="countdown">
           <div class="countdown-part">
@@ -86,6 +88,17 @@ onUnmounted(() => {
         110 rue Alexandre le Grand <br />
         76400 Fécamp
       </p>
+      <div class="maps">
+        <iframe
+          height="450"
+          style="border:0"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCac3vVtnqTL0hxEvbg3CeSsdeH2x0Mnk0&q=place_id:EjExMTAgUnVlIEFsZXhhbmRyZSBsZSBHcmFuZCwgNzY0MDAgRsOpY2FtcCwgRnJhbmNlIjASLgoUChIJjYlyTERr4EcRXWo90OldKa0QbioUChIJiWKQvEVr4EcRViVkA4BqGhw">
+        </iframe>
+        <img src="@/assets/palais-benedictine-ext-bd-c_vincent-rustuel.2.jpg" alt="palais">
+      </div>
     </div>
     <div class="third-page">
       <h3 class="champagne">le jour j</h3>
@@ -193,7 +206,7 @@ header.scrolled::before {
 
 .menu {
   height: 4vh;
-  width: 12vw;
+  width: 1.4em;
   position: relative;
   transform: rotate(0deg);
   transition: .5s ease-in-out;
@@ -288,15 +301,44 @@ header.scrolled::before {
 
 main {
   background: var(--color-champagne);
+  overflow-x: hidden;
 }
 
 .first-page {
   margin-top: 10vh;
-  height: 85vh;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.first-page .container {
+  display: flex;
+  height: 50vh;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+@media screen and (min-width: 600px) {
+  .first-page {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .first-page .container {
+    height: 70vh;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .confirm {
+    margin-bottom: 25vh;
+  }
 }
 
 .title {
@@ -306,6 +348,13 @@ main {
 .logo {
   width: 45vw;
   height: 45vw;
+}
+
+@media screen and (min-width: 600px) {
+  .logo {
+    height: 25vh;
+    width: 25vh;
+  }
 }
 
 .content {
@@ -332,10 +381,6 @@ h3 {
   padding: 5vh 0 0 0;
   word-break: break-word;
   text-align: center;
-}
-
-.second-page {
-  margin: 5vh 0;
 }
 
 .sacramento {
@@ -366,6 +411,15 @@ h3 {
   background-image: url("@/assets/Xuxu & Hieu.jpg");
   background-size: 150%;
   background-position: top;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 600px) {
+  .popup {
+    min-width: 50vw;
+    height: 65vh;
+    background-size: 125%;
+  }
 }
 
 .countdown {
@@ -395,6 +449,44 @@ h3 {
   font-weight: 100;
 }
 
+.second-page {
+  margin: 5vh 0;
+}
+
+.maps {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .second-page {
+    margin: 4vh 0 0;
+  }
+
+  .second-page h3 {
+    padding: 0;
+  }
+
+  .maps {
+    display: flex;
+    margin-top: 6vh;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .maps iframe {
+    width: 50vw;
+    height: 55vh;
+  }
+
+  .maps img {
+    width: 50vw;
+    height: 55vh;
+  }
+}
+
 .second-page p {
   color: #000;
   text-align: center;
@@ -420,6 +512,24 @@ h3 {
   background-repeat: no-repeat;
   padding-top: 11vh;
   text-shadow: 0 0 15px black;
+}
+
+@media screen and (min-width: 600px) {
+  .third-page {
+    width: 100vw;
+    height: 100vh;
+    background-size: 100%;
+    background-position: bottom;
+    background-image: url("@/assets/IMG_9984.JPG");
+    margin-top: 10vh;
+  }
+  .third-page h3 {
+    background-color: rgba(0, 0, 0, 0.20);
+    padding: 0;
+  }
+  .third-page p {
+    background-color: rgba(0, 0, 0, 0.20);
+  }
 }
 
 p {
