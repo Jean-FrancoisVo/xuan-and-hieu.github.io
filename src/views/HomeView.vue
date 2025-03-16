@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import {ref, onMounted, onUnmounted} from 'vue'
 
 const weddingDay = new Date('2025-08-23T17:00:00.000Z').getTime()
 const now = new Date().getTime()
@@ -21,7 +21,7 @@ const handleMenu = () => {
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('scroll', handleScroll, {passive: true})
 })
 
 onUnmounted(() => {
@@ -84,8 +84,8 @@ onUnmounted(() => {
     <div class="second-page">
       <h3 class="sacramento">le mariage</h3>
       <p>
-        Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br />
-        110 rue Alexandre le Grand <br />
+        Venez célébrer avec nous tout le weekend au <span>Palais Bénédictine</span><br/>
+        110 rue Alexandre le Grand <br/>
         76400 Fécamp
       </p>
       <div class="maps">
@@ -109,43 +109,47 @@ onUnmounted(() => {
         <h4>Cérémonie</h4>
         <div class="time-range">16h30 ~ 18h00</div>
         <div class="location">Au jardin du palais</div>
-        <img class="decoration" src="@/assets/party_14590894.png" alt="wedding" />
+        <img class="decoration" src="@/assets/party_14590894.png" alt="wedding"/>
       </div>
       <div class="moment">
         <h4>Cocktail</h4>
         <div class="time-range">18h00 ~ 19h30</div>
         <div class="location">Toujours au jardin du palais</div>
-        <img class="decoration" src="@/assets/wine_14590973.png" alt="wine" />
+        <img class="decoration" src="@/assets/wine_14590973.png" alt="wine"/>
       </div>
       <div class="moment">
         <h4>Réception</h4>
         <div class="time-range">19h30 ~ 23h59</div>
         <div class="location">La salle des Abbés pour les adultes</div>
         <div class="location">Les salons attenants pour les kids</div>
-        <img class="decoration" src="@/assets/spoon_15675636.png" alt="dinner" />
+        <img class="decoration" src="@/assets/spoon_15675636.png" alt="dinner"/>
       </div>
     </div>
-    <div class="fifth-page">
-      <h3 class="champagne">la nuit</h3>
-    </div>
-    <div class="sixth-page">
-      <div class="moment">
-        <h4>Soirée</h4>
-        <div class="time-range">00h00 ~ 03h45</div>
-        <div class="location">La salle des Abbés</div>
-        <img class="decoration" src="@/assets/music_15675687%201.png" alt="music" />
+    <div class="container-fifth">
+      <div class="fifth-page">
+        <h3 class="champagne">la nuit</h3>
+      </div>
+      <div class="sixth-page">
+        <div class="moment">
+          <h4>Soirée</h4>
+          <div class="time-range">00h00 ~ 03h45</div>
+          <div class="location">La salle des Abbés</div>
+          <img class="decoration" src="@/assets/music_15675687%201.png" alt="music"/>
+        </div>
       </div>
     </div>
-    <div class="seventh-page">
-      <h3 class="champagne">le lendemain</h3>
-      <p>Dimanche 24 Août</p>
-    </div>
-    <div class="eighth-page">
-      <div class="moment">
-        <h4>Brunch</h4>
-        <div class="time-range">11h00 ~ 15h00</div>
-        <div class="location">La verrière du palais</div>
-        <img class="decoration" src="@/assets/coffee_15675463%201.png" alt="coffee" />
+    <div class="container-seventh">
+      <div class="seventh-page">
+        <h3 class="champagne">le lendemain</h3>
+        <p>Dimanche 24 Août</p>
+      </div>
+      <div class="eighth-page">
+        <div class="moment">
+          <h4>Brunch</h4>
+          <div class="time-range">11h00 ~ 15h00</div>
+          <div class="location">La verrière du palais</div>
+          <img class="decoration" src="@/assets/coffee_15675463%201.png" alt="coffee"/>
+        </div>
       </div>
     </div>
     <div class="ninth-page">
@@ -523,10 +527,12 @@ h3 {
     background-image: url("@/assets/IMG_9984.JPG");
     margin-top: 10vh;
   }
+
   .third-page h3 {
     background-color: rgba(0, 0, 0, 0.20);
     padding: 0;
   }
+
   .third-page p {
     background-color: rgba(0, 0, 0, 0.20);
   }
@@ -546,6 +552,20 @@ p {
   background-color: var(--color-champagne);
   text-align: center;
   padding: 3vh 0;
+}
+
+@media screen and (min-width: 600px) {
+  .fourth-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-top: 15vh;
+    padding-bottom: 15vh;
+  }
+
+  .fourth-page .moment {
+    width: 33vw;
+  }
 }
 
 .moment {
@@ -598,6 +618,29 @@ h4 {
   text-shadow: 0 0 15px black;
 }
 
+@media screen and (min-width: 600px) {
+  .container-fifth {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .fifth-page {
+    min-width: 50vw;
+    min-height: 100vh;
+    background-size: 100%;
+    background-position: center;
+    background-image: url("@/assets/IMG_9992.JPG");
+  }
+
+  .sixth-page {
+    width: 50vw;
+  }
+}
+
 .sixth-page {
   margin-top: 5vh;
   margin-bottom: 5vh;
@@ -611,6 +654,29 @@ h4 {
   background-repeat: no-repeat;
   text-shadow: 0 0 20px black;
   padding-top: 12vh;
+}
+
+@media screen and (min-width: 600px) {
+  .container-seventh {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .seventh-page {
+    min-width: 50vw;
+    min-height: 100vh;
+    background-size: 100%;
+    background-position: center;
+    background-image: url("@/assets/IMG_0024.JPG");
+  }
+
+  .eighth-page {
+    width: 50vw;
+  }
 }
 
 .eighth-page {
@@ -629,6 +695,15 @@ h4 {
   text-shadow: 0 0 15px black;
 }
 
+@media screen and (min-width: 600px) {
+  .ninth-page {
+    margin-top: 0;
+    min-height: 100vh;
+    background-position: center;
+    background-size: 100%;
+  }
+}
+
 .tenth-page {
   color: black;
   text-align: center;
@@ -638,6 +713,12 @@ h4 {
   font-weight: 400;
   line-height: normal;
   padding: 1vh 5vw;
+}
+
+@media screen and (min-width: 600px) {
+  .tenth-page {
+    padding: 5vh 25vw;
+  }
 }
 
 .tenth-page div {
