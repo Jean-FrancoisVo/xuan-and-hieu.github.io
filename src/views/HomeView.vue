@@ -332,15 +332,17 @@ main {
   }
 
   .first-page .container {
-    height: 70vh;
+    height: 100vh;
     width: 50vw;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    padding-top: 5vh;
   }
 
   .confirm {
+    margin-top: 5vh;
     margin-bottom: 25vh;
   }
 }
@@ -421,7 +423,7 @@ h3 {
 @media screen and (min-width: 600px) {
   .popup {
     min-width: 50vw;
-    height: 65vh;
+    height: 100vh;
     background-size: 125%;
   }
 }
@@ -636,6 +638,11 @@ h4 {
     background-image: url("@/assets/IMG_9992.JPG");
   }
 
+  .fifth-page h3 {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0;
+  }
+
   .sixth-page {
     width: 50vw;
   }
@@ -674,6 +681,15 @@ h4 {
     background-image: url("@/assets/IMG_0024.JPG");
   }
 
+  .seventh-page h3 {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0;
+  }
+
+  .seventh-page p {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
   .eighth-page {
     width: 50vw;
   }
@@ -697,10 +713,16 @@ h4 {
 
 @media screen and (min-width: 600px) {
   .ninth-page {
+    padding-top: 5vh;
     margin-top: 0;
     min-height: 100vh;
     background-position: center;
     background-size: 100%;
+  }
+
+  .ninth-page h3 {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0;
   }
 }
 
