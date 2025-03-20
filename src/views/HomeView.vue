@@ -134,7 +134,7 @@ onUnmounted(() => {
           <h4>Soirée</h4>
           <div class="time-range">00h00 ~ 03h45</div>
           <div class="location">La salle des Abbés</div>
-          <img class="decoration" src="@/assets/music_15675687%201.png" alt="music"/>
+          <img class="decoration" src="@/assets/music_15675687.png" alt="music"/>
         </div>
       </div>
     </div>
@@ -148,7 +148,7 @@ onUnmounted(() => {
           <h4>Brunch</h4>
           <div class="time-range">11h00 ~ 15h00</div>
           <div class="location">La verrière du palais</div>
-          <img class="decoration" src="@/assets/coffee_15675463%201.png" alt="coffee"/>
+          <img class="decoration" src="@/assets/coffee_15675463.png" alt="coffee"/>
         </div>
       </div>
     </div>
@@ -469,12 +469,12 @@ h3 {
   }
 
   .second-page h3 {
-    padding: 0;
+    padding-top: 9vh;
   }
 
   .maps {
     display: flex;
-    margin-top: 6vh;
+    margin-top: 8vh;
     width: 100%;
     flex-direction: row;
     align-items: center;
