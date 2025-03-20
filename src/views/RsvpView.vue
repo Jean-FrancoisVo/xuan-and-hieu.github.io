@@ -44,7 +44,9 @@ p {
 }
 
 @media screen and (min-width: 600px) {
-  padding: 5vh 25vw;
+  p {
+    padding: 5vh 25vw;
+  }
 }
 
 p span {
