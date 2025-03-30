@@ -40,8 +40,26 @@
         </label>
       </div>
       <div class="form-group">
+        <div>Choix des menu</div>
+        <label class="custom-checkbox">
+          <input type="checkbox" name="option" value="omnivore">
+          <span class="checkbox"></span><span class="label">Menu omnivore</span>
+        </label>
+        <label class="custom-checkbox">
+          <input type="checkbox" name="option" value="vegan">
+          <span class="checkbox"></span><span class="label">Menu vegan</span>
+        </label>
+      </div>
+      <div class="form-group">
         <label for="diet">Avez-vous des restrictions alimentaires ? </label>
         <input type="text" id="diet">
+      </div>
+      <div class="form-group">
+        <label for="questions">Des questions ou commentaires ?</label>
+        <input type="text" id="questions">
+      </div>
+      <div class="validate">
+        <button type="submit">Validez</button>
       </div>
     </form>
   </main>
@@ -171,6 +189,25 @@ label {
 .custom-checkbox input:checked + .checkbox {
   background-color: var(--color-sacramento);
   border-color: var(--color-sacramento);
+}
+
+button[type="submit"] {
+  font-family: Alex Brush, sans-serif;
+  font-weight: 400;
+  font-size: 0.65em;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-align: center;
+  background-color: var(--color-sacramento);
+  border-color: var(--color-sacramento);
+  color: white;
+  border-radius: 18px;
+  padding: 0.7em 1.2em;
+  margin: 1em 0;
+}
+
+.validate {
+  text-align: center;
 }
 
 </style>
