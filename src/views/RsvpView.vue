@@ -1,3 +1,67 @@
+<script setup lang="ts">
+import { computed, reactive, ref } from 'vue'
+
+interface FormData {
+  attendeeFirstName: string;
+  attendeeLastName: string;
+  eventsAttending: string;
+}
+const formData = reactive<FormData>({
+  attendeeFirstName: '',
+  attendeeLastName: '',
+  eventsAttending: ''
+})
+const attendeeHasCompany = ref<boolean>(false)
+const allAttendeeSuggestions = ref<string[]>([
+  'Anne-Marie'
+])
+const suggestions = computed(() => {
+  if (!formData.attendeeFirstName) {
+    return []
+  }
+  const lowerInput = formData.attendeeFirstName.toLowerCase()
+  return allAttendeeSuggestions.value.filter((suggestion) =>
+    suggestion.toLowerCase().startsWith(lowerInput)
+  )
+})
+const firstNameIsFocused = ref<boolean>(false)
+
+function handleSubmit() {
+  console.log('Form data:', formData)
+
+}
+
+function selectSuggestion(suggestion: string) {
+  formData.attendeeFirstName = suggestion
+}
+
+function highlightMatch(suggestion: string) {
+  const lowerInput = formData.attendeeFirstName.toLowerCase();
+  const lowerSuggestion = suggestion.toLowerCase();
+  const startIndex = lowerSuggestion.indexOf(lowerInput);
+
+  if (startIndex === -1) {
+    return suggestion;
+  }
+
+  const endIndex = startIndex + lowerInput.length;
+  const beforeMatch = suggestion.substring(0, startIndex);
+  const match = suggestion.substring(startIndex, endIndex);
+  const afterMatch = suggestion.substring(endIndex);
+
+  return `${beforeMatch}<b>${match}</b>${afterMatch}`;
+}
+
+function focusOn(element: string) {
+  firstNameIsFocused.value = true;
+}
+
+function blurOn(element: string) {
+  firstNameIsFocused.value = false;
+}
+
+</script>
+
 <template>
   <main>
     <h3 class="sacramento">rsvp</h3>
@@ -6,25 +70,32 @@
       nous. <br /><br />
       Veuillez confirmer votre présence <span>avant le 30 avril</span>
     </p>
-    <form>
+    <form @submit.prevent="handleSubmit">
       <div class="form-group">
-        <label for="first-name">Prénom</label>
-        <input type="text" id="first-name">
+        <div class="search-dropdown">
+          <label for="first-name">Prénom</label>
+          <input type="text" id="first-name" class="search-input" :class="{'hide-bottom' : suggestions.length != 0}" v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
+          <ul v-show="suggestions.length > 0" class="search-suggestions">
+            <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)" class="suggestion-item">
+              <span v-html="highlightMatch(suggestion)"></span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="form-group">
-        <label for="last-name">Nom de famille</label>
-        <input type="text" id="last-name">
+        <label for="last-name">Nom</label>
+        <input type="text" id="last-name" v-model="formData.attendeeLastName">
       </div>
       <div class="form-group">
         <label for="event">Les évènements auxquels vous allez participer</label>
-        <select id="event" name="event">
+        <select id="event" name="event" v-model="formData.eventsAttending">
           <option value="">Sélectionnez une option</option>
           <option value="both">Les deux (Réception - Brunch)</option>
           <option value="reception">Réception</option>
           <option value="brunch">Brunch</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group" v-if="attendeeHasCompany">
         <div>Confirmation des accompagnants</div>
         <label class="custom-checkbox">
           <input type="checkbox" name="option" value="option1">
@@ -124,11 +195,13 @@ select {
 }
 
 input {
+  font-family: "Cormorant Garamond", serif;
   padding: 2vh 5vw;
   background-color: rgba(255, 255, 255, 0.55);
   border: 1px solid var(--color-sacramento);
   border-radius: 10px;
   outline: none;
+  font-size: 1rem;
 }
 
 input:focus {
@@ -137,7 +210,7 @@ input:focus {
 
 label {
   color: var(--color-sacramento);
-  font-size: 0.45em;
+  font-size: 1rem;
   font-weight: bolder;
   padding-bottom: 0.5vh;
 }
@@ -210,6 +283,46 @@ button[type="submit"] {
   text-align: center;
 }
 
+.search-dropdown {
+  position: relative;
+  padding-bottom: 0!important;
+}
+
+.search-input {
+  width: 100%;
+  padding: 2vh 5vw;
+  border: 1px solid var(--color-sacramento);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.search-suggestions {
+  font-family: "Cormorant Garamond", serif;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FBF4E9;
+  border: 1px solid var(--color-sacramento);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  color: black;
+}
+
+.suggestion-item {
+  padding: 1.75vh 5vw;
+  cursor: pointer;
+}
+
+.hide-bottom {
+  border-radius: 10px 10px 0 0;
+}
+
 </style>
-<script setup lang="ts">
-</script>
