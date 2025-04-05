@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
+import { b } from 'vitest/dist/chunks/suite.B2jumIFP'
 
 interface FormData {
   attendeeFirstName: string;
@@ -10,6 +11,7 @@ interface FormData {
 interface Attendee {
   firstName: string;
   lastName: string;
+  group: string;
 }
 
 const formData = reactive<FormData>({
@@ -18,14 +20,32 @@ const formData = reactive<FormData>({
   eventsAttending: ''
 })
 const allAttendees: Attendee[] = [
-  { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo' },
-  { firstName: 'Dorian', lastName: 'Chambonnet-Vo' },
-  { firstName: 'Lou', lastName: 'Chambonnet-Vo' },
-  { firstName: 'Ava', lastName: 'Chambonnet-Vo' }
+  { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO' },
+  { firstName: 'Dorian', lastName: 'Chambonnet-Vo', group: 'CVO' },
+  { firstName: 'Lou', lastName: 'Chambonnet-Vo', group: 'CVO' },
+  { firstName: 'Ava', lastName: 'Chambonnet-Vo', group: 'CVO' }
 ]
 const showFirstNameSuggestions = ref<boolean>(true)
 const showLastNameSuggestions = ref<boolean>(true)
-const attendeeHasCompany = ref<boolean>(false)
+const attendeeHasCompany = computed(() => {
+  if (!formData.attendeeFirstName) {
+    return false
+  }
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName')
+  if (attendee) {
+    return allAttendees.filter((other: Attendee) => attendee.group === other.group ).length > 1
+  } else {
+    return false
+  }
+})
+
+const attendeeGroup = computed(() => {
+  if (!attendeeHasCompany.value) {
+    return []
+  }
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName')
+  return allAttendees.filter((other: Attendee) => attendee?.group === other.group && attendee.firstName !== other.firstName)
+})
 
 const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) => computed(() => {
   let formDataField = formData[formDataKey as keyof FormData]
@@ -74,11 +94,17 @@ function highlightMatch(suggestion: string) {
 }
 
 function focusOn(element: string) {
-  showFirstNameSuggestions.value = true
+  switch (element) {
+    case 'firstName': showFirstNameSuggestions.value = true; return
+    case 'lastName': showLastNameSuggestions.value = true; return
+  }
 }
 
 function blurOn(element: string) {
-  showFirstNameSuggestions.value = false
+  switch (element) {
+    case 'firstName': showFirstNameSuggestions.value = false; return
+    case 'lastName': showLastNameSuggestions.value = false; return
+  }
 }
 
 </script>
@@ -111,7 +137,7 @@ function blurOn(element: string) {
           <label for="last-name">Nom</label>
           <input type="text" id="last-name" class="search-input"
                  :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
-                 v-model="formData.attendeeLastName" @focus="focusOn('firstName')" @blur="blurOn('firstName')" >
+                 v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')" >
           <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
             <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
                 @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
@@ -131,17 +157,9 @@ function blurOn(element: string) {
       </div>
       <div class="form-group" v-if="attendeeHasCompany">
         <div>Confirmation des accompagnants</div>
-        <label class="custom-checkbox">
-          <input type="checkbox" name="option" value="option1">
-          <span class="checkbox"></span><span class="label">Option 1</span>
-        </label>
-        <label class="custom-checkbox">
-          <input type="checkbox" name="option" value="option1">
-          <span class="checkbox"></span><span class="label">Option 1</span>
-        </label>
-        <label class="custom-checkbox">
-          <input type="checkbox" name="option" value="option1">
-          <span class="checkbox"></span><span class="label">Option 1</span>
+        <label class="custom-checkbox" v-for="company in attendeeGroup">
+          <input type="checkbox" name="option" :value=company.firstName checked>
+          <span class="checkbox"></span><span class="label">{{company.firstName}}</span>
         </label>
       </div>
       <div class="form-group">
