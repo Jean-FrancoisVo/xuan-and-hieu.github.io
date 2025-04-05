@@ -11,6 +11,7 @@ const formData = reactive<FormData>({
   attendeeLastName: '',
   eventsAttending: ''
 })
+const showSuggestions = ref<boolean>(true);
 const attendeeHasCompany = ref<boolean>(false)
 const allAttendeeSuggestions = ref<string[]>([
   'Anne-Marie'
@@ -24,7 +25,6 @@ const suggestions = computed(() => {
     suggestion.toLowerCase().startsWith(lowerInput)
   )
 })
-const firstNameIsFocused = ref<boolean>(false)
 
 function handleSubmit() {
   console.log('Form data:', formData)
@@ -33,6 +33,7 @@ function handleSubmit() {
 
 function selectSuggestion(suggestion: string) {
   formData.attendeeFirstName = suggestion
+  showSuggestions.value = false
 }
 
 function highlightMatch(suggestion: string) {
@@ -53,11 +54,11 @@ function highlightMatch(suggestion: string) {
 }
 
 function focusOn(element: string) {
-  firstNameIsFocused.value = true;
+  showSuggestions.value = true
 }
 
 function blurOn(element: string) {
-  firstNameIsFocused.value = false;
+  showSuggestions.value = false;
 }
 
 </script>
@@ -74,9 +75,9 @@ function blurOn(element: string) {
       <div class="form-group">
         <div class="search-dropdown">
           <label for="first-name">Prénom</label>
-          <input type="text" id="first-name" class="search-input" :class="{'hide-bottom' : suggestions.length != 0}" v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
-          <ul v-show="suggestions.length > 0" class="search-suggestions">
-            <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)" class="suggestion-item">
+          <input type="text" id="first-name" class="search-input" :class="{'hide-bottom' : suggestions.length > 0 && showSuggestions}" v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
+          <ul v-if="suggestions.length > 0 && showSuggestions" class="search-suggestions">
+            <li v-for="suggestion in suggestions" :key="suggestion" @mousedown="selectSuggestion(suggestion)" class="suggestion-item">
               <span v-html="highlightMatch(suggestion)"></span>
             </li>
           </ul>
