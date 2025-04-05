@@ -6,59 +6,79 @@ interface FormData {
   attendeeLastName: string;
   eventsAttending: string;
 }
+
+interface Attendee {
+  firstName: string;
+  lastName: string;
+}
+
 const formData = reactive<FormData>({
   attendeeFirstName: '',
   attendeeLastName: '',
   eventsAttending: ''
 })
-const showSuggestions = ref<boolean>(true);
+const allAttendees: Attendee[] = [
+  { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo' },
+  { firstName: 'Dorian', lastName: 'Chambonnet-Vo' },
+  { firstName: 'Lou', lastName: 'Chambonnet-Vo' },
+  { firstName: 'Ava', lastName: 'Chambonnet-Vo' }
+]
+const showFirstNameSuggestions = ref<boolean>(true)
+const showLastNameSuggestions = ref<boolean>(true)
 const attendeeHasCompany = ref<boolean>(false)
-const allAttendeeSuggestions = ref<string[]>([
-  'Anne-Marie'
-])
-const suggestions = computed(() => {
-  if (!formData.attendeeFirstName) {
+
+const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) => computed(() => {
+  let formDataField = formData[formDataKey as keyof FormData]
+  if (!formDataField) {
     return []
   }
-  const lowerInput = formData.attendeeFirstName.toLowerCase()
-  return allAttendeeSuggestions.value.filter((suggestion) =>
-    suggestion.toLowerCase().startsWith(lowerInput)
-  )
+  const lowerInput = formDataField.toLowerCase()
+  const result = new Set(allSuggestions.filter((suggestion) => suggestion.toLowerCase().startsWith(lowerInput)))
+  return [...result]
 })
+
+const firstNameSuggestions = createSuggestionsUsing('attendeeFirstName', allAttendees.map((attendee: Attendee) => attendee.firstName))
+const lastNameSuggestions = createSuggestionsUsing('attendeeLastName', allAttendees.map((attendee: Attendee) => attendee.lastName))
 
 function handleSubmit() {
   console.log('Form data:', formData)
-
 }
 
-function selectSuggestion(suggestion: string) {
-  formData.attendeeFirstName = suggestion
-  showSuggestions.value = false
+const findAttendeeFrom = (request: string, property: keyof Attendee): Attendee | undefined => allAttendees.find((attendee: Attendee) => attendee[property] === request)
+
+function selectSuggestionFrom(selected: string, property: keyof Attendee) {
+  const selectedAttendee = findAttendeeFrom(selected, property)
+  if (selectedAttendee) {
+    formData.attendeeFirstName = selectedAttendee.firstName
+    formData.attendeeLastName = selectedAttendee.lastName
+  }
+  showFirstNameSuggestions.value = false
+  showLastNameSuggestions.value = false
 }
 
 function highlightMatch(suggestion: string) {
-  const lowerInput = formData.attendeeFirstName.toLowerCase();
-  const lowerSuggestion = suggestion.toLowerCase();
-  const startIndex = lowerSuggestion.indexOf(lowerInput);
+  const lowerInput = formData.attendeeFirstName.toLowerCase()
+  const lowerSuggestion = suggestion.toLowerCase()
+  const startIndex = lowerSuggestion.indexOf(lowerInput)
 
   if (startIndex === -1) {
-    return suggestion;
+    return suggestion
   }
 
-  const endIndex = startIndex + lowerInput.length;
-  const beforeMatch = suggestion.substring(0, startIndex);
-  const match = suggestion.substring(startIndex, endIndex);
-  const afterMatch = suggestion.substring(endIndex);
+  const endIndex = startIndex + lowerInput.length
+  const beforeMatch = suggestion.substring(0, startIndex)
+  const match = suggestion.substring(startIndex, endIndex)
+  const afterMatch = suggestion.substring(endIndex)
 
-  return `${beforeMatch}<b>${match}</b>${afterMatch}`;
+  return `${beforeMatch}<b>${match}</b>${afterMatch}`
 }
 
 function focusOn(element: string) {
-  showSuggestions.value = true
+  showFirstNameSuggestions.value = true
 }
 
 function blurOn(element: string) {
-  showSuggestions.value = false;
+  showFirstNameSuggestions.value = false
 }
 
 </script>
@@ -69,23 +89,36 @@ function blurOn(element: string) {
     <p>
       Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
       nous. <br /><br />
-      Veuillez confirmer votre présence <span>avant le 30 avril</span>
+      Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
     </p>
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <div class="search-dropdown">
           <label for="first-name">Prénom</label>
-          <input type="text" id="first-name" class="search-input" :class="{'hide-bottom' : suggestions.length > 0 && showSuggestions}" v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
-          <ul v-if="suggestions.length > 0 && showSuggestions" class="search-suggestions">
-            <li v-for="suggestion in suggestions" :key="suggestion" @mousedown="selectSuggestion(suggestion)" class="suggestion-item">
-              <span v-html="highlightMatch(suggestion)"></span>
+          <input type="text" id="first-name" class="search-input"
+                 :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
+                 v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
+          <ul v-if="firstNameSuggestions.length > 0 && showFirstNameSuggestions" class="search-suggestions">
+            <li v-for="firstNameSuggestion in firstNameSuggestions" :key="firstNameSuggestion"
+                @mousedown="selectSuggestionFrom(firstNameSuggestion, 'firstName')" class="suggestion-item">
+              <span v-html="highlightMatch(firstNameSuggestion)"></span>
             </li>
           </ul>
         </div>
       </div>
       <div class="form-group">
-        <label for="last-name">Nom</label>
-        <input type="text" id="last-name" v-model="formData.attendeeLastName">
+        <div class="search-dropdown">
+          <label for="last-name">Nom</label>
+          <input type="text" id="last-name" class="search-input"
+                 :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
+                 v-model="formData.attendeeLastName" @focus="focusOn('firstName')" @blur="blurOn('firstName')" >
+          <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
+            <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
+                @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
+              <span v-html="highlightMatch(lastNameSuggestion)"></span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="form-group">
         <label for="event">Les évènements auxquels vous allez participer</label>
@@ -286,7 +319,7 @@ button[type="submit"] {
 
 .search-dropdown {
   position: relative;
-  padding-bottom: 0!important;
+  padding-bottom: 0 !important;
 }
 
 .search-input {
