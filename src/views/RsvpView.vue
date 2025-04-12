@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { b } from 'vitest/dist/chunks/suite.B2jumIFP'
 
 interface FormData {
   attendeeFirstName: string;
   attendeeLastName: string;
   eventsAttending: string;
+  attendeeMenu: string;
+  groupMembers: Map<string, GroupMember>;
+}
+
+interface GroupMember {
+  firstName: string;
+  lastName: string;
+  menu: string | null;
 }
 
 interface Attendee {
@@ -17,7 +24,9 @@ interface Attendee {
 const formData = reactive<FormData>({
   attendeeFirstName: '',
   attendeeLastName: '',
-  eventsAttending: ''
+  eventsAttending: '',
+  groupMembers: new Map(),
+  attendeeMenu: ''
 })
 const allAttendees: Attendee[] = [
   { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO' },
@@ -33,7 +42,7 @@ const attendeeHasCompany = computed(() => {
   }
   const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName')
   if (attendee) {
-    return allAttendees.filter((other: Attendee) => attendee.group === other.group ).length > 1
+    return allAttendees.filter((other: Attendee) => attendee.group === other.group).length > 1
   } else {
     return false
   }
@@ -48,11 +57,11 @@ const attendeeGroup = computed(() => {
 })
 
 const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) => computed(() => {
-  let formDataField = formData[formDataKey as keyof FormData]
+  const formDataField = formData[formDataKey as keyof FormData]
   if (!formDataField) {
     return []
   }
-  const lowerInput = formDataField.toLowerCase()
+  const lowerInput = (formDataField as string).toLowerCase()
   const result = new Set(allSuggestions.filter((suggestion) => suggestion.toLowerCase().startsWith(lowerInput)))
   return [...result]
 })
@@ -64,6 +73,22 @@ function handleSubmit() {
   console.log('Form data:', formData)
 }
 
+function updateAccompanying(group: string, firstName: string, isAccompanying: boolean) {
+  const existingMember = allAttendees.find(member => member.group === group && member.firstName === firstName)
+
+  if (existingMember) {
+    if (isAccompanying) {
+      formData.groupMembers.set(firstName, {
+        firstName: existingMember.firstName,
+        lastName: existingMember.lastName,
+        menu: null
+      })
+    } else {
+      formData.groupMembers.delete(firstName)
+    }
+  }
+}
+
 const findAttendeeFrom = (request: string, property: keyof Attendee): Attendee | undefined => allAttendees.find((attendee: Attendee) => attendee[property] === request)
 
 function selectSuggestionFrom(selected: string, property: keyof Attendee) {
@@ -71,6 +96,16 @@ function selectSuggestionFrom(selected: string, property: keyof Attendee) {
   if (selectedAttendee) {
     formData.attendeeFirstName = selectedAttendee.firstName
     formData.attendeeLastName = selectedAttendee.lastName
+    formData.groupMembers = allAttendees
+      .filter((attendee: Attendee) => attendee.group === selectedAttendee.group && attendee.firstName !== selectedAttendee.firstName)
+      .reduce((acc: Map<string, GroupMember>, curr: Attendee) => {
+        acc.set(curr.firstName, {
+          firstName: curr.firstName,
+          lastName: curr.lastName,
+          menu: null
+        })
+        return acc
+      }, new Map<string, GroupMember>())
   }
   showFirstNameSuggestions.value = false
   showLastNameSuggestions.value = false
@@ -95,15 +130,23 @@ function highlightMatch(suggestion: string) {
 
 function focusOn(element: string) {
   switch (element) {
-    case 'firstName': showFirstNameSuggestions.value = true; return
-    case 'lastName': showLastNameSuggestions.value = true; return
+    case 'firstName':
+      showFirstNameSuggestions.value = true
+      return
+    case 'lastName':
+      showLastNameSuggestions.value = true
+      return
   }
 }
 
 function blurOn(element: string) {
   switch (element) {
-    case 'firstName': showFirstNameSuggestions.value = false; return
-    case 'lastName': showLastNameSuggestions.value = false; return
+    case 'firstName':
+      showFirstNameSuggestions.value = false
+      return
+    case 'lastName':
+      showLastNameSuggestions.value = false
+      return
   }
 }
 
@@ -137,7 +180,7 @@ function blurOn(element: string) {
           <label for="last-name">Nom</label>
           <input type="text" id="last-name" class="search-input"
                  :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
-                 v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')" >
+                 v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')">
           <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
             <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
                 @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
@@ -147,7 +190,7 @@ function blurOn(element: string) {
         </div>
       </div>
       <div class="form-group">
-        <label for="event">Les évènements auxquels vous allez participer</label>
+        <label for="event">Évènements auxquels vous allez participer</label>
         <select id="event" name="event" v-model="formData.eventsAttending">
           <option value="">Sélectionnez une option</option>
           <option value="both">Les deux (Réception - Brunch)</option>
@@ -157,21 +200,37 @@ function blurOn(element: string) {
       </div>
       <div class="form-group" v-if="attendeeHasCompany">
         <div>Confirmation des accompagnants</div>
-        <label class="custom-checkbox" v-for="company in attendeeGroup">
-          <input type="checkbox" name="option" :value=company.firstName checked>
-          <span class="checkbox"></span><span class="label">{{company.firstName}}</span>
+        <label class="custom-checkbox attendee-group" v-for="(member, index) in attendeeGroup" :key="index">
+          <input type="checkbox" name="option" :id="'member-' + index" :value=member.firstName checked
+                 @change="updateAccompanying(member.group, member.firstName, ($event.target as HTMLInputElement)?.checked)"
+          >
+          <span class="checkbox"></span><span class="label">{{ member.firstName }}</span>
         </label>
       </div>
       <div class="form-group">
         <div>Choix des menu</div>
-        <label class="custom-checkbox">
-          <input type="checkbox" name="option" value="omnivore">
-          <span class="checkbox"></span><span class="label">Menu omnivore</span>
-        </label>
-        <label class="custom-checkbox">
-          <input type="checkbox" name="option" value="vegan">
-          <span class="checkbox"></span><span class="label">Menu vegan</span>
-        </label>
+        <div class="choose-menu">
+          <span>Pour vous :</span>
+          <label class="custom-checkbox">
+            <input type="radio" name="option" value="omnivore" v-model="formData.attendeeMenu">
+            <span class="checkbox"></span><span class="label">Omnivore</span>
+          </label>
+          <label class="custom-checkbox">
+            <input type="radio" name="option" value="vegan" v-model="formData.attendeeMenu">
+            <span class="checkbox"></span><span class="label">Vegan</span>
+          </label>
+        </div>
+        <div v-for="member in attendeeGroup" class="choose-menu">
+          <span>Pour {{ member.firstName }} :</span>
+          <label class="custom-checkbox">
+            <input type="radio" name="option" value="omnivore">
+            <span class="checkbox"></span><span class="label">Omnivore</span>
+          </label>
+          <label class="custom-checkbox">
+            <input type="radio" name="option" value="vegan">
+            <span class="checkbox"></span><span class="label">Vegan</span>
+          </label>
+        </div>
       </div>
       <div class="form-group">
         <label for="diet">Avez-vous des restrictions alimentaires ? </label>
@@ -375,6 +434,25 @@ button[type="submit"] {
 
 .hide-bottom {
   border-radius: 10px 10px 0 0;
+}
+
+.choose-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.choose-menu > span:nth-child(3n + 1) {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.choose-menu span {
+  color: black;
+  padding-bottom: 0.65em;
+}
+
+.attendee-group {
+  padding: 0.35vh 0;
 }
 
 </style>
