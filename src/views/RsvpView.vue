@@ -78,7 +78,6 @@ function handleSubmit() {
 }
 
 function updateAccompanying(group: string, firstName: string, isAccompanying: boolean) {
-  const startTime = performance.now()
   const existingMember = allAttendees.find(member => member.group === group && member.firstName === firstName)
 
   if (existingMember) {
@@ -92,8 +91,6 @@ function updateAccompanying(group: string, firstName: string, isAccompanying: bo
       formData.groupMembers.delete(firstName)
     }
   }
-  const endTime = performance.now()
-  console.log(`Execution time: ${endTime - startTime} milliseconds`)
 }
 
 function updateMenu(group: string, firstName: string, choice: string) {
