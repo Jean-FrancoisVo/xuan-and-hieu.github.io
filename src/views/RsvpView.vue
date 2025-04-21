@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import {computed, reactive, ref} from 'vue'
 
 interface FormData {
   attendeeFirstName: string;
@@ -7,6 +7,8 @@ interface FormData {
   eventsAttending: string;
   attendeeMenu: string;
   groupMembers: Map<string, GroupMember>;
+  dietRestriction: string;
+  questions: string;
 }
 
 interface GroupMember {
@@ -26,13 +28,15 @@ const formData = reactive<FormData>({
   attendeeLastName: '',
   eventsAttending: '',
   groupMembers: new Map(),
-  attendeeMenu: ''
+  attendeeMenu: '',
+  dietRestriction: '',
+  questions: ''
 })
 const allAttendees: Attendee[] = [
-  { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO' },
-  { firstName: 'Dorian', lastName: 'Chambonnet-Vo', group: 'CVO' },
-  { firstName: 'Lou', lastName: 'Chambonnet-Vo', group: 'CVO' },
-  { firstName: 'Ava', lastName: 'Chambonnet-Vo', group: 'CVO' }
+  {firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO'},
+  {firstName: 'Dorian', lastName: 'Chambonnet-Vo', group: 'CVO'},
+  {firstName: 'Lou', lastName: 'Chambonnet-Vo', group: 'CVO'},
+  {firstName: 'Ava', lastName: 'Chambonnet-Vo', group: 'CVO'}
 ]
 const showFirstNameSuggestions = ref<boolean>(true)
 const showLastNameSuggestions = ref<boolean>(true)
@@ -40,7 +44,7 @@ const attendeeHasCompany = computed(() => {
   if (!formData.attendeeFirstName) {
     return false
   }
-  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName')
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, ['firstName'])
   if (attendee) {
     return allAttendees.filter((other: Attendee) => attendee.group === other.group).length > 1
   } else {
@@ -52,7 +56,7 @@ const attendeeGroup = computed(() => {
   if (!attendeeHasCompany.value) {
     return []
   }
-  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName')
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, ['firstName'])
   return allAttendees.filter((other: Attendee) => attendee?.group === other.group && attendee.firstName !== other.firstName)
 })
 
@@ -74,6 +78,7 @@ function handleSubmit() {
 }
 
 function updateAccompanying(group: string, firstName: string, isAccompanying: boolean) {
+  const startTime = performance.now()
   const existingMember = allAttendees.find(member => member.group === group && member.firstName === firstName)
 
   if (existingMember) {
@@ -87,12 +92,27 @@ function updateAccompanying(group: string, firstName: string, isAccompanying: bo
       formData.groupMembers.delete(firstName)
     }
   }
+  const endTime = performance.now()
+  console.log(`Execution time: ${endTime - startTime} milliseconds`)
 }
 
-const findAttendeeFrom = (request: string, property: keyof Attendee): Attendee | undefined => allAttendees.find((attendee: Attendee) => attendee[property] === request)
+function updateMenu(group: string, firstName: string, choice: string) {
+  const existingMember = allAttendees.find(member => member.group === group && member.firstName === firstName)
+
+  if (existingMember) {
+    formData.groupMembers.set(firstName, {
+      firstName: existingMember.firstName,
+      lastName: existingMember.lastName,
+      menu: choice
+    })
+  }
+}
+
+const findAttendeeFrom = (request: string, criteria: (keyof Attendee)[]): Attendee | undefined => allAttendees
+  .find((attendee: Attendee) => criteria.every((property) => attendee[property] === request))
 
 function selectSuggestionFrom(selected: string, property: keyof Attendee) {
-  const selectedAttendee = findAttendeeFrom(selected, property)
+  const selectedAttendee = findAttendeeFrom(selected, [property])
   if (selectedAttendee) {
     formData.attendeeFirstName = selectedAttendee.firstName
     formData.attendeeLastName = selectedAttendee.lastName
@@ -157,13 +177,15 @@ function blurOn(element: string) {
     <h3 class="sacramento">rsvp</h3>
     <p>
       Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
-      nous. <br /><br />
-      Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
+      nous. <br/><br/>
+      Veuillez confirmer votre présence <br/> <span>avant le 31 mai</span>
+      <br/><br/>
+      Les champs avec * sont obligatoires.
     </p>
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <div class="search-dropdown">
-          <label for="first-name">Prénom</label>
+          <label for="first-name">Prénom *</label>
           <input type="text" id="first-name" class="search-input"
                  :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
                  v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
@@ -177,7 +199,7 @@ function blurOn(element: string) {
       </div>
       <div class="form-group">
         <div class="search-dropdown">
-          <label for="last-name">Nom</label>
+          <label for="last-name">Nom *</label>
           <input type="text" id="last-name" class="search-input"
                  :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
                  v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')">
@@ -190,7 +212,7 @@ function blurOn(element: string) {
         </div>
       </div>
       <div class="form-group">
-        <label for="event">Évènements auxquels vous allez participer</label>
+        <label for="event">Évènements auxquels vous allez participer *</label>
         <select id="event" name="event" v-model="formData.eventsAttending">
           <option value="">Sélectionnez une option</option>
           <option value="both">Les deux (Réception - Brunch)</option>
@@ -199,7 +221,7 @@ function blurOn(element: string) {
         </select>
       </div>
       <div class="form-group" v-if="attendeeHasCompany">
-        <div>Confirmation des accompagnants</div>
+        <div>Confirmation des accompagnants *</div>
         <label class="custom-checkbox attendee-group" v-for="(member, index) in attendeeGroup" :key="index">
           <input type="checkbox" name="option" :id="'member-' + index" :value=member.firstName checked
                  @change="updateAccompanying(member.group, member.firstName, ($event.target as HTMLInputElement)?.checked)"
@@ -208,9 +230,9 @@ function blurOn(element: string) {
         </label>
       </div>
       <div class="form-group">
-        <div>Choix des menu</div>
+        <div>Choix des menu *</div>
         <div class="choose-menu">
-          <span>Pour vous :</span>
+          <span>Pour vous</span>
           <label class="custom-checkbox">
             <input type="radio" name="option" value="omnivore" v-model="formData.attendeeMenu">
             <span class="checkbox"></span><span class="label">Omnivore</span>
@@ -221,24 +243,28 @@ function blurOn(element: string) {
           </label>
         </div>
         <div v-for="member in attendeeGroup" class="choose-menu">
-          <span>Pour {{ member.firstName }} :</span>
+          <span>Pour {{ member.firstName }}</span>
           <label class="custom-checkbox">
-            <input type="radio" name="option" value="omnivore">
+            <input type="radio" :name="'option' + member.firstName" value="omnivore"
+                   @change="updateMenu(member.group, member.firstName, 'omnivore')"
+            >
             <span class="checkbox"></span><span class="label">Omnivore</span>
           </label>
           <label class="custom-checkbox">
-            <input type="radio" name="option" value="vegan">
+            <input type="radio" :name="'option' + member.firstName" value="vegan"
+                   @change="updateMenu(member.group, member.firstName, 'vegan')"
+            >
             <span class="checkbox"></span><span class="label">Vegan</span>
           </label>
         </div>
       </div>
       <div class="form-group">
         <label for="diet">Avez-vous des restrictions alimentaires ? </label>
-        <input type="text" id="diet">
+        <input type="text" id="diet" v-model="formData.dietRestriction">
       </div>
       <div class="form-group">
         <label for="questions">Des questions ou commentaires ?</label>
-        <input type="text" id="questions">
+        <input type="text" id="questions" v-model="formData.questions">
       </div>
       <div class="validate">
         <button type="submit">Validez</button>
@@ -438,7 +464,7 @@ button[type="submit"] {
 
 .choose-menu {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: 25% repeat(auto-fit, minmax(100px, 1fr));
 }
 
 .choose-menu > span:nth-child(3n + 1) {
