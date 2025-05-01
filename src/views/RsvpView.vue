@@ -96,6 +96,7 @@ async function handleSubmit() {
     didTry.value = true
     return
   }
+  isResponseOk.value = true
   const formAsJson = JSON.stringify(formData, (key: String, value: any) => {
     if (value instanceof Map) {
       return Object.fromEntries(value)
