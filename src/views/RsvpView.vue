@@ -217,111 +217,115 @@ function blurOn(element: string) {
 
 <template>
   <main>
-    <h3 class="sacramento">rsvp</h3>
-    <p>
-      Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
-      nous. <br /><br />
-      Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
-      <br /><br />
-      Les champs avec * sont obligatoires.
-    </p>
-    <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <div class="search-dropdown">
-          <label for="first-name">Prénom *</label>
-          <input type="text" id="first-name" class="search-input"
-                 :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
-                 v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
-          <ul v-if="firstNameSuggestions.length > 0 && showFirstNameSuggestions" class="search-suggestions">
-            <li v-for="firstNameSuggestion in firstNameSuggestions" :key="firstNameSuggestion"
-                @mousedown="selectSuggestionFrom(firstNameSuggestion, 'firstName')" class="suggestion-item">
-              <span v-html="highlightMatch(firstNameSuggestion)"></span>
-            </li>
-          </ul>
+    <div>
+      <h3 class="sacramento">rsvp</h3>
+      <p>
+        Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
+        nous. <br /><br />
+        Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
+        <br /><br />
+        Les champs avec * sont obligatoires.
+      </p>
+      <form @submit.prevent="handleSubmit">
+        <div class="form-group">
+          <div class="search-dropdown">
+            <label for="first-name">Prénom *</label>
+            <input type="text" id="first-name" class="search-input"
+                   :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
+                   v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
+            <ul v-if="firstNameSuggestions.length > 0 && showFirstNameSuggestions" class="search-suggestions">
+              <li v-for="firstNameSuggestion in firstNameSuggestions" :key="firstNameSuggestion"
+                  @mousedown="selectSuggestionFrom(firstNameSuggestion, 'firstName')" class="suggestion-item">
+                <span v-html="highlightMatch(firstNameSuggestion)"></span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="search-dropdown">
-          <label for="last-name">Nom *</label>
-          <input type="text" id="last-name" class="search-input"
-                 :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
-                 v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')">
-          <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
-            <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
-                @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
-              <span v-html="highlightMatch(lastNameSuggestion)"></span>
-            </li>
-          </ul>
+        <div class="form-group">
+          <div class="search-dropdown">
+            <label for="last-name">Nom *</label>
+            <input type="text" id="last-name" class="search-input"
+                   :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
+                   v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')">
+            <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
+              <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
+                  @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
+                <span v-html="highlightMatch(lastNameSuggestion)"></span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="event">Évènements auxquels vous allez participer *</label>
-        <select id="event" name="event" v-model="formData.eventsAttending">
-          <option value="">Sélectionnez une option</option>
-          <option value="both">Les deux (Réception - Brunch)</option>
-          <option value="reception">Réception</option>
-          <option value="brunch">Brunch</option>
-        </select>
-      </div>
-      <div class="form-group" v-if="attendeeHasCompany">
-        <div>Confirmation des accompagnants *</div>
-        <label class="custom-checkbox attendee-group" v-for="(member, index) in attendeeGroup" :key="index">
-          <input type="checkbox" name="option" :id="'member-' + index" :value=member.firstName checked
-                 @change="updateAccompanying(member.group, member.firstName, ($event.target as HTMLInputElement)?.checked)"
-          >
-          <span class="checkbox"></span><span class="label">{{ member.firstName }}</span>
-        </label>
-      </div>
-      <div class="form-group">
-        <div>Choix des menu *</div>
-        <div class="choose-menu">
-          <span>Pour vous</span>
-          <label class="custom-checkbox">
-            <input type="radio" name="option" value="omnivore" v-model="formData.attendeeMenu">
-            <span class="checkbox"></span><span class="label">Omnivore</span>
-          </label>
-          <label class="custom-checkbox">
-            <input type="radio" name="option" value="vegan" v-model="formData.attendeeMenu">
-            <span class="checkbox"></span><span class="label">Vegan</span>
-          </label>
+        <div class="form-group">
+          <label for="event">Évènements auxquels vous allez participer *</label>
+          <select id="event" name="event" v-model="formData.eventsAttending">
+            <option value="">Sélectionnez une option</option>
+            <option value="both">Les deux (Réception - Brunch)</option>
+            <option value="reception">Réception</option>
+            <option value="brunch">Brunch</option>
+          </select>
         </div>
-        <div v-for="member in attendeeGroup" class="choose-menu">
-          <span>Pour {{ member.firstName }}</span>
-          <label class="custom-checkbox" v-if="!member.isKid">
-            <input type="radio" :name="'option' + member.firstName" value="omnivore"
-                   @change="updateMenu(member.group, member.firstName, 'omnivore')"
+        <div class="form-group" v-if="attendeeHasCompany">
+          <div>Confirmation des accompagnants *</div>
+          <label class="custom-checkbox attendee-group" v-for="(member, index) in attendeeGroup" :key="index">
+            <input type="checkbox" name="option" :id="'member-' + index" :value=member.firstName checked
+                   @change="updateAccompanying(member.group, member.firstName, ($event.target as HTMLInputElement)?.checked)"
             >
-            <span class="checkbox"></span><span class="label">Omnivore</span>
-          </label>
-          <label class="custom-checkbox" v-if="!member.isKid">
-            <input type="radio" :name="'option' + member.firstName" value="vegan"
-                   @change="updateMenu(member.group, member.firstName, 'vegan')"
-            >
-            <span class="checkbox"></span><span class="label">Vegan</span>
-          </label>
-          <label class="custom-checkbox" v-if="member.isKid">
-            <input type="radio" :name="'option' + member.firstName" value="kid"
-                   @change="updateMenu(member.group, member.firstName, 'kid')"
-            >
-            <span class="checkbox"></span><span class="label">Enfant</span>
+            <span class="checkbox"></span><span class="label">{{ member.firstName }}</span>
           </label>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="diet">Avez-vous des restrictions alimentaires ? </label>
-        <input type="text" id="diet" v-model="formData.dietRestriction">
-      </div>
-      <div class="form-group">
-        <label for="questions">Des questions ou commentaires ?</label>
-        <input type="text" id="questions" v-model="formData.questions">
-      </div>
-      <p v-if="!isFormValid && didTry">Tous les champs requis doivent être renseignés</p>
-      <p v-if="displaySuccess">Votre réponse a bien été prise en compte. A très vite !</p>
-      <p style="color: red" v-if="!isResponseOk">Une erreur est survenue, réessayer plus tard ou contactez Hieu.</p>
-      <div class="validate">
-        <button type="submit">Validez</button>
-      </div>
-    </form>
+        <div class="form-group">
+          <div>Choix des menu *</div>
+          <div class="choose-menu">
+            <span>Pour vous</span>
+            <label class="custom-checkbox">
+              <input type="radio" name="option" value="omnivore" v-model="formData.attendeeMenu">
+              <span class="checkbox"></span><span class="label">Omnivore</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="option" value="vegan" v-model="formData.attendeeMenu">
+              <span class="checkbox"></span><span class="label">Vegan</span>
+            </label>
+          </div>
+          <div v-for="member in attendeeGroup" class="choose-menu">
+            <span>Pour {{ member.firstName }}</span>
+            <label class="custom-checkbox" v-if="!member.isKid">
+              <input type="radio" :name="'option' + member.firstName" value="omnivore"
+                     @change="updateMenu(member.group, member.firstName, 'omnivore')"
+              >
+              <span class="checkbox"></span><span class="label">Omnivore</span>
+            </label>
+            <label class="custom-checkbox" v-if="!member.isKid">
+              <input type="radio" :name="'option' + member.firstName" value="vegan"
+                     @change="updateMenu(member.group, member.firstName, 'vegan')"
+              >
+              <span class="checkbox"></span><span class="label">Vegan</span>
+            </label>
+            <label class="custom-checkbox" v-if="member.isKid">
+              <input type="radio" :name="'option' + member.firstName" value="kid"
+                     @change="updateMenu(member.group, member.firstName, 'kid')"
+              >
+              <span class="checkbox"></span><span class="label">Enfant</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="diet">Avez-vous des restrictions alimentaires ? </label>
+          <input type="text" id="diet" v-model="formData.dietRestriction">
+        </div>
+        <div class="form-group">
+          <label for="questions">Des questions ou commentaires ?</label>
+          <input type="text" id="questions" v-model="formData.questions">
+        </div>
+        <p v-if="!isFormValid && didTry">Tous les champs requis doivent être renseignés</p>
+        <p v-if="displaySuccess">Votre réponse a bien été prise en compte. A très vite !</p>
+        <p style="color: red" v-if="!isResponseOk">Une erreur est survenue, réessayer plus tard ou contactez Hieu.</p>
+        <div class="validate">
+          <button type="submit">Validez</button>
+        </div>
+      </form>
+    </div>
+    <div class="desktop-img">
+    </div>
   </main>
 </template>
 
@@ -330,6 +334,25 @@ main {
   background: var(--color-champagne);
   overflow-x: hidden;
   margin-top: 10vh;
+}
+
+.desktop-img {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  main {
+    display: grid;
+    grid-template-columns: 55% auto;
+  }
+
+  .desktop-img {
+    display: block;
+    background-image: url("@/assets/IMG_9991.JPG");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
 }
 
 .sacramento {
@@ -360,12 +383,6 @@ p {
   white-space: pre-wrap;
 }
 
-@media screen and (min-width: 600px) {
-  p {
-    padding: 5vh 25vw;
-  }
-}
-
 p span {
   font-weight: bolder;
 }
@@ -383,6 +400,13 @@ select {
   outline: none;
 }
 
+
+@media screen and (min-width: 600px) {
+  select {
+    padding: 2vh 2vw;
+  }
+}
+
 input {
   font-family: "Cormorant Garamond", serif;
   padding: 2vh 5vw;
@@ -391,6 +415,12 @@ input {
   border-radius: 10px;
   outline: none;
   font-size: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+  input {
+    padding: 2vh 2vw;
+  }
 }
 
 input:focus {
@@ -487,6 +517,12 @@ button[type="submit"] {
   background-color: rgba(255, 255, 255, 0.55);
 }
 
+@media screen and (min-width: 600px) {
+  .search-input {
+    padding: 2vh 2vw;
+  }
+}
+
 .search-suggestions {
   font-family: "Cormorant Garamond", serif;
   position: absolute;
@@ -508,6 +544,12 @@ button[type="submit"] {
 .suggestion-item {
   padding: 1.75vh 5vw;
   cursor: pointer;
+}
+
+@media screen and (min-width: 600px) {
+  .suggestion-item {
+    padding: 1.75vh 2vw;
+  }
 }
 
 .hide-bottom {
