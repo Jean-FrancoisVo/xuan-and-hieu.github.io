@@ -21,6 +21,10 @@ const goToMain = (triggerToggleMenu: boolean = true) => {
     toggleMenu()
   }
 }
+const goToFAQ = () => {
+  router.push("/faq")
+  toggleMenu()
+}
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, {passive: true})
@@ -49,7 +53,7 @@ onUnmounted(() => {
       <div @click="goToMain()">Le mariage</div>
       <div>Notre histoire</div>
       <div>Votre voyage & hébergement</div>
-      <div>FAQ</div>
+      <div @click="goToFAQ()">FAQ</div>
       <button @click="goToRsvp" class="confirm">Confirmez votre présence</button>
     </nav>
   </div>
@@ -206,4 +210,11 @@ header.scrolled::before {
   background-color: var(--color-champagne);
   cursor: pointer;
 }
+
+@media screen and (min-width: 600px) {
+  .confirm {
+    width: 25%!important;
+  }
+}
+
 </style>

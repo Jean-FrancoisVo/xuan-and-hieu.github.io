@@ -14,6 +14,11 @@ const router = createRouter({
       name: 'rsvp',
       component: () => import('../views/RsvpView.vue'),
     },
+    {
+      path: '/faq',
+      name: 'faq',
+      component: () => import('../views/FaqView.vue'),
+    },
   ],
 })
 

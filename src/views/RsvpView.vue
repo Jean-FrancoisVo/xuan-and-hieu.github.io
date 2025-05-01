@@ -329,7 +329,7 @@ function blurOn(element: string) {
   </main>
 </template>
 
-<style>
+<style scoped>
 main {
   background: var(--color-champagne);
   overflow-x: hidden;
