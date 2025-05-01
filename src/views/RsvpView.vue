@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, reactive, ref} from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 interface FormData {
   attendeeFirstName: string;
@@ -21,6 +21,7 @@ interface Attendee {
   firstName: string;
   lastName: string;
   group: string;
+  isKid: boolean;
 }
 
 const formData = reactive<FormData>({
@@ -32,14 +33,20 @@ const formData = reactive<FormData>({
   dietRestriction: '',
   questions: ''
 })
+
 const allAttendees: Attendee[] = [
-  {firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO'},
-  {firstName: 'Dorian', lastName: 'Chambonnet-Vo', group: 'CVO'},
-  {firstName: 'Lou', lastName: 'Chambonnet-Vo', group: 'CVO'},
-  {firstName: 'Ava', lastName: 'Chambonnet-Vo', group: 'CVO'}
+  { firstName: 'Anne-Marie', lastName: 'Chambonnet-Vo', group: 'CVO', isKid: false },
+  { firstName: 'Dorian', lastName: 'Chambonnet-Vo', group: 'CVO', isKid: false },
+  { firstName: 'Lou', lastName: 'Chambonnet-Vo', group: 'CVO', isKid: true },
+  { firstName: 'Ava', lastName: 'Chambonnet-Vo', group: 'CVO', isKid: true }
 ]
+
 const showFirstNameSuggestions = ref<boolean>(true)
 const showLastNameSuggestions = ref<boolean>(true)
+const didTry = ref<boolean>(false)
+const isResponseOk = ref<boolean>(true)
+const displaySuccess = ref<boolean>(false)
+
 const attendeeHasCompany = computed(() => {
   if (!formData.attendeeFirstName) {
     return false
@@ -50,6 +57,17 @@ const attendeeHasCompany = computed(() => {
   } else {
     return false
   }
+})
+
+const requiredFields: (keyof FormData)[] = [
+  'attendeeFirstName',
+  'attendeeLastName',
+  'eventsAttending',
+  'attendeeMenu'
+]
+
+const isFormValid = computed(() => {
+  return requiredFields.every(field => formData[field] && formData[field] !== '')
 })
 
 const attendeeGroup = computed(() => {
@@ -73,8 +91,35 @@ const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) =
 const firstNameSuggestions = createSuggestionsUsing('attendeeFirstName', allAttendees.map((attendee: Attendee) => attendee.firstName))
 const lastNameSuggestions = createSuggestionsUsing('attendeeLastName', allAttendees.map((attendee: Attendee) => attendee.lastName))
 
-function handleSubmit() {
-  console.log('Form data:', formData)
+async function handleSubmit() {
+  if (!isFormValid.value) {
+    didTry.value = true
+    return
+  }
+  const formAsJson = JSON.stringify(formData, (key: String, value: any) => {
+    if (value instanceof Map) {
+      return Object.fromEntries(value)
+    }
+    return value
+  })
+
+  try {
+    const response = await fetch('https://mjh6pt0nz4.execute-api.eu-west-3.amazonaws.com/default/saveAttendeeChoice?TableName=attendeeChoices', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formAsJson)
+    })
+    if (!response.ok) {
+      isResponseOk.value = false
+    } else {
+      displaySuccess.value = true
+    }
+  } catch (err) {
+    isResponseOk.value = false
+    console.error(err)
+  }
 }
 
 function updateAccompanying(group: string, firstName: string, isAccompanying: boolean) {
@@ -174,9 +219,9 @@ function blurOn(element: string) {
     <h3 class="sacramento">rsvp</h3>
     <p>
       Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
-      nous. <br/><br/>
-      Veuillez confirmer votre présence <br/> <span>avant le 31 mai</span>
-      <br/><br/>
+      nous. <br /><br />
+      Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
+      <br /><br />
       Les champs avec * sont obligatoires.
     </p>
     <form @submit.prevent="handleSubmit">
@@ -241,17 +286,23 @@ function blurOn(element: string) {
         </div>
         <div v-for="member in attendeeGroup" class="choose-menu">
           <span>Pour {{ member.firstName }}</span>
-          <label class="custom-checkbox">
+          <label class="custom-checkbox" v-if="!member.isKid">
             <input type="radio" :name="'option' + member.firstName" value="omnivore"
                    @change="updateMenu(member.group, member.firstName, 'omnivore')"
             >
             <span class="checkbox"></span><span class="label">Omnivore</span>
           </label>
-          <label class="custom-checkbox">
+          <label class="custom-checkbox" v-if="!member.isKid">
             <input type="radio" :name="'option' + member.firstName" value="vegan"
                    @change="updateMenu(member.group, member.firstName, 'vegan')"
             >
             <span class="checkbox"></span><span class="label">Vegan</span>
+          </label>
+          <label class="custom-checkbox" v-if="member.isKid">
+            <input type="radio" :name="'option' + member.firstName" value="kid"
+                   @change="updateMenu(member.group, member.firstName, 'kid')"
+            >
+            <span class="checkbox"></span><span class="label">Enfant</span>
           </label>
         </div>
       </div>
@@ -263,6 +314,9 @@ function blurOn(element: string) {
         <label for="questions">Des questions ou commentaires ?</label>
         <input type="text" id="questions" v-model="formData.questions">
       </div>
+      <p v-if="!isFormValid && didTry">Tous les champs requis doivent être renseignés</p>
+      <p v-if="displaySuccess">Votre réponse a bien été prise en compte. A très vite !</p>
+      <p style="color: red" v-if="!isResponseOk">Une erreur est survenue, réessayer plus tard ou contactez Hieu.</p>
       <div class="validate">
         <button type="submit">Validez</button>
       </div>
