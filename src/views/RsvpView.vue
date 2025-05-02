@@ -15,6 +15,7 @@ interface GroupMember {
   firstName: string;
   lastName: string;
   menu: string | null;
+  age: number | null;
 }
 
 interface Attendee {
@@ -78,6 +79,8 @@ const attendeeGroup = computed(() => {
   return allAttendees.filter((other: Attendee) => attendee?.group === other.group && attendee.firstName !== other.firstName)
 })
 
+const attendeeGroupHasChildren = computed(() => attendeeGroup.value.some((attendee: Attendee) => attendee.isKid))
+
 const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) => computed(() => {
   const formDataField = formData[formDataKey as keyof FormData]
   if (!formDataField) {
@@ -110,7 +113,7 @@ async function handleSubmit() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formAsJson)
+      body: formAsJson
     })
     if (!response.ok) {
       isResponseOk.value = false
@@ -131,7 +134,8 @@ function updateAccompanying(group: string, firstName: string, isAccompanying: bo
       formData.groupMembers.set(firstName, {
         firstName: existingMember.firstName,
         lastName: existingMember.lastName,
-        menu: null
+        menu: null,
+        age: null,
       })
     } else {
       formData.groupMembers.delete(firstName)
@@ -143,11 +147,45 @@ function updateMenu(group: string, firstName: string, choice: string) {
   const existingMember = allAttendees.find(member => member.group === group && member.firstName === firstName)
 
   if (existingMember) {
-    formData.groupMembers.set(firstName, {
-      firstName: existingMember.firstName,
-      lastName: existingMember.lastName,
-      menu: choice
-    })
+    if (formData.groupMembers.has(firstName)) {
+      const previous = formData.groupMembers.get(firstName)
+      formData.groupMembers.set(firstName, {
+        firstName: previous?.firstName!!,
+        lastName: previous?.lastName!!,
+        menu: choice,
+        age: previous?.age ?? null,
+      })
+    } else {
+      formData.groupMembers.set(firstName, {
+        firstName: existingMember.firstName,
+        lastName: existingMember.lastName,
+        menu: choice,
+        age: null,
+      })
+    }
+  }
+}
+
+function updateChildAge(firstName: string, age: string) {
+  const existingMember = allAttendees.find(member => member.firstName === firstName)
+
+  if (existingMember) {
+    if (formData.groupMembers.has(firstName)) {
+      const previous = formData.groupMembers.get(firstName)
+      formData.groupMembers.set(firstName, {
+        firstName: previous?.firstName!!,
+        lastName: previous?.lastName!!,
+        menu: previous?.menu ?? null,
+        age: Number.parseInt(age),
+      })
+    } else {
+      formData.groupMembers.set(firstName, {
+        firstName: existingMember.firstName,
+        lastName: existingMember.lastName,
+        menu: null,
+        age: Number.parseInt(age),
+      })
+    }
   }
 }
 
@@ -165,7 +203,8 @@ function selectSuggestionFrom(selected: string, property: keyof Attendee) {
         acc.set(curr.firstName, {
           firstName: curr.firstName,
           lastName: curr.lastName,
-          menu: null
+          menu: null,
+          age: null,
         })
         return acc
       }, new Map<string, GroupMember>())
@@ -230,7 +269,7 @@ function blurOn(element: string) {
         <div class="form-group">
           <div class="search-dropdown">
             <label for="first-name">Prénom *</label>
-            <input type="text" id="first-name" class="search-input"
+            <input type="text" id="first-name" class="search-input" autocomplete="false"
                    :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
                    v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
             <ul v-if="firstNameSuggestions.length > 0 && showFirstNameSuggestions" class="search-suggestions">
@@ -276,7 +315,7 @@ function blurOn(element: string) {
         <div class="form-group">
           <div>Choix des menu *</div>
           <div class="choose-menu">
-            <span>Pour vous</span>
+            <span class="justify-right">Pour vous</span>
             <label class="custom-checkbox">
               <input type="radio" name="option" value="omnivore" v-model="formData.attendeeMenu">
               <span class="checkbox"></span><span class="label">Omnivore</span>
@@ -287,7 +326,7 @@ function blurOn(element: string) {
             </label>
           </div>
           <div v-for="member in attendeeGroup" class="choose-menu">
-            <span>Pour {{ member.firstName }}</span>
+            <span class="justify-right">Pour {{ member.firstName }}</span>
             <label class="custom-checkbox" v-if="!member.isKid">
               <input type="radio" :name="'option' + member.firstName" value="omnivore"
                      @change="updateMenu(member.group, member.firstName, 'omnivore')"
@@ -306,6 +345,15 @@ function blurOn(element: string) {
               >
               <span class="checkbox"></span><span class="label">Enfant</span>
             </label>
+          </div>
+        </div>
+        <div class="form-group" v-if="attendeeGroupHasChildren">
+          <div>Veuillez renseigner l'âge des enfants. *</div>
+          <div v-for="member in attendeeGroup">
+            <div v-if="member.isKid" class="choose-age">
+              <label :for="'age' + member.firstName" class="justify-right">Pour {{ member.firstName }}</label>
+              <input type="number" :id="'age' + member.firstName" @change="updateChildAge(member.firstName, ($event.target as HTMLInputElement)?.value)">
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -561,9 +609,10 @@ button[type="submit"] {
   grid-template-columns: 25% repeat(auto-fit, minmax(100px, 1fr));
 }
 
-.choose-menu > span:nth-child(3n + 1) {
-  justify-content: flex-end;
-  text-align: right;
+@media screen and (min-width: 600px) {
+  .choose-menu {
+    grid-template-columns: 20% 30% 30% auto;
+  }
 }
 
 .choose-menu span {
@@ -573,6 +622,36 @@ button[type="submit"] {
 
 .attendee-group {
   padding: 0.35vh 0;
+}
+
+.choose-age {
+  display: grid;
+  grid-template-columns: 25% repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.choose-age label {
+  color: black;
+  font-weight: normal;
+  padding-top: 0.5em;
+  padding-right: 0.5em;
+  font-size: 1rem;
+}
+
+.choose-age input {
+  padding: 1vh 1vw;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 600px) {
+  .choose-age {
+    grid-template-columns: 20% 30% 30% auto;
+  }
+}
+
+.justify-right {
+  justify-content: flex-end;
+  text-align: right;
 }
 
 </style>
