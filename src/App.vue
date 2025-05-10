@@ -25,6 +25,10 @@ const goToFAQ = () => {
   router.push("/faq")
   toggleMenu()
 }
+const goToTripAccommodation = () => {
+  router.push("/trip-accommodation")
+  toggleMenu()
+}
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, {passive: true})
@@ -51,8 +55,7 @@ onUnmounted(() => {
   <div class="overlay" :class="{ show: isMenuOpen }">
     <nav class="overlay-content">
       <div @click="goToMain()">Le mariage</div>
-      <div>Notre histoire</div>
-      <div>Votre voyage & hébergement</div>
+      <div @click="goToTripAccommodation">Voyage & hébergement</div>
       <div @click="goToFAQ()">FAQ</div>
       <button @click="goToRsvp" class="confirm">Confirmez votre présence</button>
     </nav>

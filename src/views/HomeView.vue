@@ -1,14 +1,57 @@
 <script setup lang="ts">
 import router from '@/router'
 
-const weddingDay = new Date('2025-08-23T17:00:00.000Z').getTime()
-const now = new Date().getTime()
-const untilWedding = new Date(weddingDay - now)
+function getTimeDifference(targetDate: string) {
+  const now = new Date();
+  const target = new Date(targetDate);
 
-const months = untilWedding.getMonth()
-const days = untilWedding.getDay()
-const hours = untilWedding.getHours()
-const minutes = untilWedding.getMinutes()
+  if (now >= target) {
+    return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, message: "Target date is in the past!" };
+  }
+
+  let current = new Date(now);
+  let end = new Date(target);
+
+  let seconds = end.getUTCSeconds() - current.getUTCSeconds();
+  let minutes = end.getUTCMinutes() - current.getUTCMinutes();
+  let hours = end.getUTCHours() - current.getUTCHours();
+  let days = end.getUTCDate() - current.getUTCDate();
+  let months = end.getUTCMonth() - current.getUTCMonth();
+  let years = end.getUTCFullYear() - current.getUTCFullYear();
+
+  if (seconds < 0) {
+    seconds += 60;
+    minutes--;
+  }
+  if (minutes < 0) {
+    minutes += 60;
+    hours--;
+  }
+  if (hours < 0) {
+    hours += 24;
+    days--;
+  }
+  if (days < 0) {
+    const tempEndDate = new Date(end);
+    tempEndDate.setUTCDate(0);
+    days += tempEndDate.getUTCDate();
+    months--;
+  }
+  if (months < 0) {
+    months += 12;
+    years--;
+  }
+
+  return { years, months, days, hours, minutes, seconds };
+}
+
+const weddingDay ='2025-08-23T13:00:00.000Z'
+const untilWedding = getTimeDifference(weddingDay)
+
+const months = untilWedding.months
+const days = untilWedding.days
+const hours = untilWedding.hours
+const minutes = untilWedding.minutes
 const goToRsvp = () => {
   router.push("/rsvp")
 }
@@ -71,19 +114,19 @@ const goToRsvp = () => {
     <div class="fourth-page">
       <div class="moment">
         <h4>Cérémonie</h4>
-        <div class="time-range">16h30 ~ 18h00</div>
-        <div class="location">Au jardin du palais</div>
+        <div class="time-range">15h30 ~ 17h30</div>
+        <div class="location">Au jardin du Palais</div>
         <img class="decoration" src="@/assets/party_14590894.png" alt="wedding"/>
       </div>
       <div class="moment">
         <h4>Cocktail</h4>
-        <div class="time-range">18h00 ~ 19h30</div>
-        <div class="location">Toujours au jardin du palais</div>
+        <div class="time-range">17h30 ~ 19h00</div>
+        <div class="location">Terrasse du Palais</div>
         <img class="decoration" src="@/assets/wine_14590973.png" alt="wine"/>
       </div>
       <div class="moment">
         <h4>Réception</h4>
-        <div class="time-range">19h30 ~ 23h59</div>
+        <div class="time-range">19h00 ~ 23h30</div>
         <div class="location">La salle des Abbés pour les adultes</div>
         <div class="location">Les salons attenants pour les kids</div>
         <img class="decoration" src="@/assets/spoon_15675636.png" alt="dinner"/>
@@ -96,7 +139,7 @@ const goToRsvp = () => {
       <div class="sixth-page">
         <div class="moment">
           <h4>Soirée</h4>
-          <div class="time-range">00h00 ~ 03h45</div>
+          <div class="time-range">23h30 ~ 03h45</div>
           <div class="location">La salle des Abbés</div>
           <img class="decoration" src="@/assets/music_15675687.png" alt="music"/>
         </div>
@@ -110,8 +153,8 @@ const goToRsvp = () => {
       <div class="eighth-page">
         <div class="moment">
           <h4>Brunch</h4>
-          <div class="time-range">11h00 ~ 15h00</div>
-          <div class="location">La verrière du palais</div>
+          <div class="time-range">11h00 ~ 14h30</div>
+          <div class="location">La verrière du Palais</div>
           <img class="decoration" src="@/assets/coffee_15675463.png" alt="coffee"/>
         </div>
       </div>
@@ -121,14 +164,16 @@ const goToRsvp = () => {
     </div>
     <div class="tenth-page">
       <div>
-        Soyez <span>élégants</span> et surtout <span>à l’aise</span> !
+        Soyez <span>élégants</span> et <span>à l’aise</span> !
       </div>
       <div>
-        Envie de briller ? C’est l’occasion parfaite de sortir votre plus beau costume
-        ou votre robe de soirée. Un brin d’extravagance est même le bienvenu !
+        Notre mariage sera sous le thème <span>Rococo chic</span>, alliant raffinement et éclat.
       </div>
       <div>
-        Si vous préférez la simplicité, une chemise avec un pantalon ou une jolie robe feront tout autant l’affaire.
+        Envie de briller ? Sortez votre plus beau costume ou robe de soirée, un brin d’extravagance est même le bienvenu !
+      </div>
+      <div>
+        Si vous préférez la simplicité, une chemise et un pantalon ou une jolie robe feront l’affaire.
       </div>
       <div>
         L’essentiel, c’est que vous vous sentiez bien et prêt·e à faire la fête avec nous !
