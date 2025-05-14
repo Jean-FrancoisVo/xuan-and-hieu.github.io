@@ -377,7 +377,7 @@ function blurOn(element: string) {
       <p>
         Que vous veniez pour tout le week-end ou seulement pour le grand jour, nous serons honorés de vous compter parmi
         nous. <br /><br />
-        Veuillez confirmer votre présence <br /> <span>avant le 31 mai</span>
+        Veuillez confirmer votre présence <br /> <span>avant le 15 juin</span>
         <br /><br />
         Les champs avec * sont obligatoires.
       </p>
