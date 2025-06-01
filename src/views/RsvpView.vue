@@ -25,6 +25,11 @@ interface Attendee {
   isKid: boolean;
 }
 
+interface Suggestion {
+  name: string,
+  hint: string,
+}
+
 const formData = reactive<FormData>({
   attendeeFirstName: '',
   attendeeLastName: '',
@@ -69,6 +74,10 @@ const allAttendees: Attendee[] = [
   { firstName: 'Bich Thuy', lastName: 'Nguyen', group: 'HOA', isKid: false },
   { firstName: 'Hoang', lastName: 'Vo', group: 'HOA', isKid: false },
   { firstName: 'Huyen', lastName: 'Phan', group: 'HUY', isKid: false },
+  { firstName: 'Manh Dinh', lastName: 'Vu', group: 'JIM', isKid: true },
+  { firstName: 'The Vinh', lastName: 'Vu', group: 'JIM', isKid: true },
+  { firstName: 'Thao', lastName: 'Vu', group: 'JIM', isKid: false },
+  { firstName: 'Jimmy', lastName: 'Vu', group: 'JIM', isKid: false },
 
   { firstName: 'Nga', lastName: 'Vo', group: 'PAR', isKid: false },
   { firstName: 'Linh', lastName: 'Vo', group: 'PAR', isKid: false },
@@ -76,11 +85,6 @@ const allAttendees: Attendee[] = [
   { firstName: 'Dai', lastName: 'Vu', group: 'PAR', isKid: false },
   { firstName: 'Loc', lastName: 'Nguyen', group: 'PAR', isKid: false },
   { firstName: 'Rosalie', lastName: 'Houllier', group: 'PAR', isKid: false },
-
-  { firstName: 'Manh Dinh', lastName: 'Vu', group: 'JIM', isKid: true },
-  { firstName: 'The Vinh', lastName: 'Vu', group: 'JIM', isKid: true },
-  { firstName: 'Thao', lastName: 'Vu', group: 'JIM', isKid: false },
-  { firstName: 'Jimmy', lastName: 'Vu', group: 'JIM', isKid: false },
 
   { firstName: 'Khiem', lastName: 'Vu', group: 'KHI', isKid: false },
   { firstName: 'Khiem gai', lastName: 'Vu', group: 'KHI', isKid: false }, // TODO
@@ -161,6 +165,10 @@ const allAttendees: Attendee[] = [
   { firstName: 'Du', lastName: 'Phan', group: 'PHA', isKid: false },
   { firstName: 'Kim Anh', lastName: 'Nguyen', group: 'NKI', isKid: false },
   { firstName: 'Kim Anh\'s Hubby', lastName: 'Phan', group: 'NKI', isKid: false },
+  { firstName: 'Luka', lastName: 'Phan', group: 'NKI', isKid: true },
+
+  { firstName: 'Siu', lastName: 'Pham', group: 'SIU', isKid: false },
+  { firstName: 'Jean-Luc', lastName: 'Mello', group: 'SIU', isKid: false },
 ]
 
 const showFirstNameSuggestions = ref<boolean>(true)
@@ -173,7 +181,7 @@ const attendeeHasCompany = computed(() => {
   if (!formData.attendeeFirstName) {
     return false
   }
-  const attendee = findAttendeeFrom(formData.attendeeFirstName, ['firstName'])
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName', formData.attendeeLastName, 'lastName')
   if (attendee) {
     return allAttendees.filter((other: Attendee) => attendee.group === other.group).length > 1
   } else {
@@ -196,24 +204,29 @@ const attendeeGroup = computed(() => {
   if (!attendeeHasCompany.value) {
     return []
   }
-  const attendee = findAttendeeFrom(formData.attendeeFirstName, ['firstName'])
+  const attendee = findAttendeeFrom(formData.attendeeFirstName, 'firstName', formData.attendeeLastName, 'lastName')
   return allAttendees.filter((other: Attendee) => attendee?.group === other.group && attendee.firstName !== other.firstName)
 })
 
 const attendeeGroupHasChildren = computed(() => attendeeGroup.value.some((attendee: Attendee) => attendee.isKid))
 
-const createSuggestionsUsing = (formDataKey: string, allSuggestions: string[]) => computed(() => {
+const createSuggestionsUsing = (formDataKey: string, allSuggestions: Suggestion[]) => computed(() => {
   const formDataField = formData[formDataKey as keyof FormData]
   if (!formDataField) {
     return []
   }
   const lowerInput = (formDataField as string).toLowerCase()
-  const result = new Set(allSuggestions.filter((suggestion) => suggestion.toLowerCase().startsWith(lowerInput)))
-  return [...result]
+  return allSuggestions.filter((suggestion) => suggestion.name.toLowerCase().includes(lowerInput))
+    .map((suggestion) => ({ name: suggestion.name, hint: suggestion.hint }))
 })
 
-const firstNameSuggestions = createSuggestionsUsing('attendeeFirstName', allAttendees.map((attendee: Attendee) => attendee.firstName))
-const lastNameSuggestions = createSuggestionsUsing('attendeeLastName', allAttendees.map((attendee: Attendee) => attendee.lastName))
+const firstNameSuggestions = createSuggestionsUsing('attendeeFirstName', allAttendees.map((attendee: Attendee) => ({
+  name: attendee.firstName, hint: attendee.lastName,
+})))
+
+const lastNameSuggestions = createSuggestionsUsing('attendeeLastName', allAttendees.map((attendee: Attendee) => ({
+  name: attendee.lastName, hint: attendee.firstName,
+})))
 
 async function handleSubmit() {
   if (!isFormValid.value) {
@@ -222,6 +235,9 @@ async function handleSubmit() {
   }
   isResponseOk.value = true
   const formAsJson = JSON.stringify(formData, (key: String, value: any) => {
+    if (value === null) {
+      return undefined;
+    }
     if (value instanceof Map) {
       return Object.fromEntries(value)
     }
@@ -310,11 +326,11 @@ function updateChildAge(firstName: string, age: string) {
   }
 }
 
-const findAttendeeFrom = (request: string, criteria: (keyof Attendee)[]): Attendee | undefined => allAttendees
-  .find((attendee: Attendee) => criteria.every((property) => attendee[property] === request))
+const findAttendeeFrom = (request: string, criteria: (keyof Attendee), other: string, otherCriteria: (keyof Attendee)): Attendee | undefined => allAttendees
+  .find((attendee: Attendee) => attendee[criteria] === request && attendee[otherCriteria] === other)
 
-function selectSuggestionFrom(selected: string, property: keyof Attendee) {
-  const selectedAttendee = findAttendeeFrom(selected, [property])
+function selectSuggestionFrom(selected: string, property: keyof Attendee, hint: string, hintProperty: keyof Attendee) {
+  const selectedAttendee = findAttendeeFrom(selected, property, hint, hintProperty)
   if (selectedAttendee) {
     formData.attendeeFirstName = selectedAttendee.firstName
     formData.attendeeLastName = selectedAttendee.lastName
@@ -394,9 +410,9 @@ function blurOn(element: string) {
                    :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
                    v-model="formData.attendeeFirstName" @focus="focusOn('firstName')" @blur="blurOn('firstName')">
             <ul v-if="firstNameSuggestions.length > 0 && showFirstNameSuggestions" class="search-suggestions">
-              <li v-for="firstNameSuggestion in firstNameSuggestions" :key="firstNameSuggestion"
-                  @mousedown="selectSuggestionFrom(firstNameSuggestion, 'firstName')" class="suggestion-item">
-                <span v-html="highlightMatch(firstNameSuggestion)"></span>
+              <li v-for="firstNameSuggestion in firstNameSuggestions" :key="firstNameSuggestion.name + firstNameSuggestion.hint"
+                  @mousedown="selectSuggestionFrom(firstNameSuggestion.name, 'firstName', firstNameSuggestion.hint, 'lastName')" class="suggestion-item">
+                <span v-html="highlightMatch(firstNameSuggestion.name + ' ' + firstNameSuggestion.hint)"></span>
               </li>
             </ul>
           </div>
@@ -408,9 +424,9 @@ function blurOn(element: string) {
                    :class="{'hide-bottom' : firstNameSuggestions.length > 0 && showFirstNameSuggestions}"
                    v-model="formData.attendeeLastName" @focus="focusOn('lastName')" @blur="blurOn('lastName')">
             <ul v-if="lastNameSuggestions.length > 0 && showLastNameSuggestions" class="search-suggestions">
-              <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion"
-                  @mousedown="selectSuggestionFrom(lastNameSuggestion, 'lastName')" class="suggestion-item">
-                <span v-html="highlightMatch(lastNameSuggestion)"></span>
+              <li v-for="lastNameSuggestion in lastNameSuggestions" :key="lastNameSuggestion.name + lastNameSuggestion.hint"
+                  @mousedown="selectSuggestionFrom(lastNameSuggestion.name, 'lastName', lastNameSuggestion.hint, 'firstName')" class="suggestion-item">
+                <span v-html="highlightMatch(lastNameSuggestion.name + ' ' + lastNameSuggestion.hint)"></span>
               </li>
             </ul>
           </div>
@@ -759,20 +775,29 @@ button[type="submit"] {
 }
 
 .choose-age input {
-  padding: 1vh 1vw;
+  padding: 1.2vh 4vw;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 @media screen and (min-width: 600px) {
   .choose-age {
     grid-template-columns: 20% 30% 30% auto;
   }
+
+  .choose-age input {
+    padding: 1vh 1.2vw;
+  }
 }
 
 .justify-right {
   justify-content: flex-end;
   text-align: right;
+}
+
+#event {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
 }
 
 </style>
