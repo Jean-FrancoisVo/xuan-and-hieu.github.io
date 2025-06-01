@@ -81,9 +81,10 @@ const allAttendees: Attendee[] = [
   { firstName: 'The Vinh', lastName: 'Vu', group: 'JIM', isKid: true },
   { firstName: 'Thao', lastName: 'Vu', group: 'JIM', isKid: false },
   { firstName: 'Jimmy', lastName: 'Vu', group: 'JIM', isKid: false },
-  { firstName: 'Khiem', lastName: 'Vu', group: 'JIM', isKid: false },
-  { firstName: 'Khiem gai', lastName: 'Vu', group: 'JIM', isKid: false }, // TODO
-  { firstName: 'Jonathan', lastName: 'Plin', group: 'JON', isKid: false },
+
+  { firstName: 'Khiem', lastName: 'Vu', group: 'KHI', isKid: false },
+  { firstName: 'Khiem gai', lastName: 'Vu', group: 'KHI', isKid: false }, // TODO
+
   { firstName: 'Jonathan', lastName: 'Plin', group: 'JON', isKid: false },
   { firstName: 'Joseph', lastName: 'Devarenne', group: 'JOS', isKid: false },
   { firstName: 'Justine', lastName: 'Lesage', group: 'JOS', isKid: false },
@@ -112,8 +113,8 @@ const allAttendees: Attendee[] = [
   { firstName: 'Mélany', lastName: 'Patte', group: 'MEL', isKid: false },
   { firstName: 'Thomas', lastName: 'Chausson', group: 'MEL', isKid: false },
   { firstName: 'Emile', lastName: 'Nguyen', group: 'MIM', isKid: true },
-  { firstName: 'Mimi', lastName: 'Nguyen', group: 'MIM', isKid: false }, // TODO
-  { firstName: 'Vincent', lastName: 'Nguyen', group: 'MIM', isKid: false }, // TODO
+  { firstName: 'Mimi', lastName: 'Nguyen', group: 'MIM', isKid: false },
+  { firstName: 'Vincent', lastName: 'Nguyen', group: 'MIM', isKid: false },
   { firstName: 'Daphné An Chi', lastName: 'Dao', group: 'MIU', isKid: true },
   { firstName: 'Trieu Minh', lastName: 'Huyen', group: 'MIU', isKid: false },
   { firstName: 'Duy Quan', lastName: 'Dao', group: 'MIU', isKid: false },
@@ -156,6 +157,10 @@ const allAttendees: Attendee[] = [
   { firstName: 'Maxime', lastName: 'Denis', group: 'VYT', isKid: false },
   { firstName: 'William', lastName: 'Pauly', group: 'WIL', isKid: false },
   { firstName: 'Diane', lastName: 'Wacheux', group: 'WIL', isKid: false },
+
+  { firstName: 'Du', lastName: 'Phan', group: 'PHA', isKid: false },
+  { firstName: 'Kim Anh', lastName: 'Nguyen', group: 'NKI', isKid: false },
+  { firstName: 'Kim Anh\'s Hubby', lastName: 'Phan', group: 'NKI', isKid: false },
 ]
 
 const showFirstNameSuggestions = ref<boolean>(true)

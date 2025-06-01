@@ -35,7 +35,7 @@
       Non, il n'y aura pas de liste de mariage. Votre présence est ce qui compte le plus pour nous. <br/><br/>
       Si vous souhaitez néanmoins participer à nos projets (un grand merci pour votre générosité !),
       une urne sera mise à disposition le jour J, ainsi qu’un lien vers une cagnotte en ligne.
-      Une partie des sommes reçues sera reversée à la Fondation ARC pour la recherche contre le cancer,
+      Une partie des sommes reçues sera reversée à la <a href="https://www.fondation-arc.org/" target="_blank" rel="noopener noreferrer">Fondation ARC</a> pour la recherche contre le cancer,
       en hommage à la maman de Xuan et à toutes les victimes de cette maladie dévastatrice.
     </p>
     <h3 class="sacramento">♡♡</h3>
@@ -90,6 +90,10 @@ p {
 
 p span {
   font-weight: bold;
+}
+
+a {
+  color: black;
 }
 
 </style>

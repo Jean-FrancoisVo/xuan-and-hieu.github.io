@@ -46,7 +46,7 @@ import img9980 from '../assets/IMG_9980.jpg'
       <h4>
         Hôtels à proximité
       </h4>
-      <a href="https://g.co/kgs/k5euNG2">
+      <a class="small-padding" href="https://g.co/kgs/k5euNG2" target="_blank" rel="noopener noreferrer">
         LE GRAND PAVOIS
       </a>
       <p>
@@ -57,7 +57,7 @@ import img9980 from '../assets/IMG_9980.jpg'
         7 min à pied du Palais<br/>
         10 min à pied de la Gare
       </p>
-      <a href="https://g.co/kgs/rbqVqJG">
+      <a class="small-padding" href="https://g.co/kgs/rbqVqJG" target="_blank" rel="noopener noreferrer">
         HÔTEL DE LA PLAGE
       </a>
       <p>
@@ -68,7 +68,7 @@ import img9980 from '../assets/IMG_9980.jpg'
         6 min à pied du Palais<br/>
         15 min à pied de la Gare
       </p>
-      <a href="https://www.booking.com/Share-0NOr8Rl">
+      <a class="small-padding" href="https://booking.com/Share-0NOr8Rl" target="_blank" rel="noopener noreferrer">
         HÔTEL DE LA MER
       </a>
       <p>
@@ -88,7 +88,7 @@ import img9980 from '../assets/IMG_9980.jpg'
         Airbnb
       </h4>
       <p>
-        Vous trouverez <a href="https://www.airbnb.fr/wishlists/1653633687">ici</a> une sélection de logements proches du Palais
+        Vous trouverez <a href="https://www.airbnb.fr/wishlists/1653633687" target="_blank" rel="noopener noreferrer">ici</a> une sélection de logements proches du Palais
       </p>
     </div>
   </main>
@@ -158,14 +158,19 @@ span {
 }
 
 a {
+  color: black;
+}
+
+.small-padding {
   font-family: Cormorant Garamond, serif;
   font-weight: bold;
   font-size: 0.7em;
   line-height: normal;
   text-align: center;
   color: black;
-  padding: 1.5vh 4vw;
   text-decoration: underline;
+  padding: 1.5vh 4vw;
+
 }
 
 </style>
