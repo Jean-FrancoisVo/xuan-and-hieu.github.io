@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import router from '@/router'
 import img9980 from '../assets/IMG_9980.jpg'
 </script>
 
