@@ -70,6 +70,7 @@ const allAttendees: Attendee[] = [
   { firstName: 'Pierre', lastName: 'Ebran', group: 'ENO', isKid: false },
   { firstName: 'Fabien', lastName: 'Rey', group: 'FAB', isKid: false },
   { firstName: 'Floriane', lastName: 'Bahou', group: 'FLO', isKid: false },
+  { firstName: 'Antoine', lastName: 'Starck', group: 'FLO', isKid: false },
   { firstName: 'Han', lastName: 'Pham', group: 'HAN', isKid: false },
   { firstName: 'Bich Thuy', lastName: 'Nguyen', group: 'HOA', isKid: false },
   { firstName: 'Hoang', lastName: 'Vo', group: 'HOA', isKid: false },
